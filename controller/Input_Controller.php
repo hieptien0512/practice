@@ -15,7 +15,7 @@ class Ctrl_Input_User
         $name = $email = $address = $tel = '';
         $modelUser = new Model_User();
 
-        //insert user nếu $_post đã được set giá trị
+        //insert/update user nếu $_post đã được set giá trị
         if (!empty($_POST)) {
             $id = '';
             if (isset($_POST['name'])) {
@@ -57,7 +57,11 @@ class Ctrl_Input_User
         //nếu có giá trị $_get thì tiến hành truy xuất xữ liệu theo id nhận vào
         if (isset($_GET['id'])) {
             $id = $_GET['id'];
-            $userData = $modelUser->getUserDetail($id);
+            //kiểm tra id hợp lệ
+            if (is_numeric($_GET['id']) == true) {
+                $userData = $modelUser->getUserDetail($id);
+            }
+            //kiểm tra nếu
             if (is_object($userData)) {
 
                 while ($row = $userData->fetch_assoc()) {
@@ -68,11 +72,13 @@ class Ctrl_Input_User
                 $id = "";
             }
         }
+        //fill dữ liệu nếu là edit
         if ($id != null) {
             $template->assign('user', $user);
             $template->display("input_view.tpl");
 
-        } else {
+        } //load form trống nếu add new
+        else {
 
             $template->display("input_view.tpl");
 

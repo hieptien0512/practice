@@ -44,7 +44,9 @@
                         <td>{$result->tel}</td>
                         <td>{$result->address}</td>
                         <td>
-                            <button class="btn btn-warning" onclick="window.open('Input_Controller.php?id={$result->id}','_self')">Edit</button>
+                            <button class="btn btn-warning"
+                                    onclick="window.open('Input_Controller.php?id={$result->id}','_self')">Edit
+                            </button>
                         </td>
                         <td>
                             <button class="btn btn-danger " onclick="deleteUser({$result->id})">Delete</button>
