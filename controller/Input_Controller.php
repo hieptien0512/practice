@@ -1,90 +1,36 @@
 <?php
 include_once("../model/E_User.php");
 include_once("../model/M_User.php");
-require_once("../smarty/Smarty.class.php");
+require_once("../My_Smarty.php");
 
 class Ctrl_Input_User
 {
     public function invoke()
     {
         //sử dụng smarty template hiển thị trang input
-        $template = new Smarty();
-        $template->template_dir = "../templates";
-        $template->compile_dir = "../templates_c";
-
-        $name = $email = $address = $tel = '';
+        $template = new mySmarty();
         $modelUser = new Model_User();
-
-        //insert/update user nếu $_post đã được set giá trị
+        //call model if $_POST isset
         if (!empty($_POST)) {
-            $id = '';
-            if (isset($_POST['name'])) {
-                $name = $_POST['name'];
-            }
-            if (isset($_POST['email'])) {
-                $email = $_POST['email'];
-            }
-            if (isset($_POST['tel'])) {
-                $tel = $_POST['tel'];
-            }
-            if (isset($_POST['address'])) {
-                $address = $_POST['address'];
-            }
-            if (isset($_POST['id'])) {
-                $id = $_POST['id'];
-            }
-
-            //check các kí tự đặt biệt
-            $name = str_replace('\'', '\\\'', $name);
-            $email = str_replace('\'', '\\\'', $email);
-            $tel = str_replace('\'', '\\\'', $tel);
-            $address = str_replace('\'', '\\\'', $address);
-            $id = str_replace('\'', '\\\'', $id);
-
-            //nếu có giá trị id thì tiến hành update
-            if ($id != '') {
-                $modelUser->updateUser($id, $name, $email, $tel, $address);
+            //if id is set => update user with id
+            if ($_POST['id'] != '') {
+                $modelUser->updateUser($_POST);
                 header('Location: C_User.php');
                 die();
-            } //nếu không có id thì tiến hành insert new
-            else {
-                $modelUser->insertUser($name, $email, $tel, $address);
+            } else {
+                $modelUser->insertUser($_POST);
                 header('Location: C_User.php');
                 die();
             }
         }
-        $id = "";
         //nếu có giá trị $_get thì tiến hành truy xuất xữ liệu theo id nhận vào
         if (isset($_GET['id'])) {
-            $id = $_GET['id'];
-            //kiểm tra id hợp lệ
-            if (is_numeric($_GET['id']) == true) {
-                $userData = $modelUser->getUserDetail($id);
-            }
-            //kiểm tra nếu
-            if (is_object($userData)) {
-
-                while ($row = $userData->fetch_assoc()) {
-                    $user = new Entity_User($row['id'], $row['name'], $row['email'], $row['tel'], $row['address']);
-
-                }
-            } else {
-                $id = "";
-            }
-        }
-        //fill dữ liệu nếu là edit
-        if ($id != null) {
-            $template->assign('user', $user);
+            $userData = $modelUser->getUserDetail($_GET['id']);
+            $template->assign('user', $userData);
             $template->display("input_view.tpl");
-
-        } //load form trống nếu add new
-        else {
-
+        } else {
             $template->display("input_view.tpl");
-
         }
-
-
     }
 }
 

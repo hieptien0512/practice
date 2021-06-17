@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.31, created on 2021-06-16 08:13:21
+<?php /* Smarty version 2.6.31, created on 2021-06-17 06:37:36
          compiled from index.tpl */ ?>
 <!doctype html>
 <html lang="vi">
@@ -53,8 +53,10 @@
                         <td><?php echo $this->_tpl_vars['result']->address; ?>
 </td>
                         <td>
-                            <button class="btn btn-warning" onclick="window.open('Input_Controller.php?id=<?php echo $this->_tpl_vars['result']->id; ?>
-','_self')">Edit</button>
+                            <button class="btn btn-warning"
+                                    onclick="window.open('Input_Controller.php?id=<?php echo $this->_tpl_vars['result']->id; ?>
+','_self')">Edit
+                            </button>
                         </td>
                         <td>
                             <button class="btn btn-danger " onclick="deleteUser(<?php echo $this->_tpl_vars['result']->id; ?>
