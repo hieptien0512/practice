@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Test template view</title>
+    <title>User Display</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -19,9 +19,10 @@
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h2 class="text-center">Danh sách thông tin user</h2>
-
+            <form method="get">
+                <input type="text" name="s" class="form-control" style="margin-top: 15px; margin-bottom: 15px;" placeholder="Tìm Kiếm Theo tên">
+            </form>
         </div>
-
         <div class="panel-body">
             <table class="table table-bordered">
                 <thead>

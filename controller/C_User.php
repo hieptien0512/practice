@@ -13,6 +13,14 @@ class Ctrl_User
         if (isset($_POST['id'])) {
             $modelUser = new Model_User();
             $modelUser->deleteUserById($_POST['id']);
+        } elseif (isset($_GET['s']) && $_GET['s'] != '') {
+            //search user
+            $modelUser = new Model_User();
+            $userList = $modelUser->searchUser($_GET['s']);
+            //load template user view
+            $template->assign('index', 1);
+            $template->assign('list', $userList);
+            $template->display("index.tpl");
         } else {
             //get all user model
             $modelUser = new Model_User();

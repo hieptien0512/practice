@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.31, created on 2021-06-17 07:52:34
+<?php /* Smarty version 2.6.31, created on 2021-06-17 09:18:32
          compiled from input_view.tpl */ ?>
 <!doctype html>
 <html lang="vi">
@@ -7,7 +7,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Test template view</title>
+    <title>Edit & New User</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>

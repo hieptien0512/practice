@@ -51,6 +51,27 @@ class Model_User
         return $user;
     }
 
+    public function searchUser($name)
+    {
+        $name = str_replace('\'', '\\\'', $name);
+
+        //sql query string
+        $sqlquery = "SELECT *
+                     FROM user
+                     WHERE name LIKE '$name'";
+        //query data
+        $result = $this->db->query($sqlquery);
+        $userList = array();
+        if (is_object($result)) {
+            while ($row = $result->fetch_assoc()) {
+                $user_for_view = new Entity_User($row['id'], $row['name'], $row['email'], $row['tel'], $row['address']);
+                array_push($userList, $user_for_view);
+            }
+        }
+
+        return $userList;
+    }
+
     public function deleteUserById($usid)
     {
         if (is_numeric($usid) == true) {
