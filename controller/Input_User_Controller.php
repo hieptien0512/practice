@@ -1,7 +1,7 @@
 <?php
-include_once("../model/E_User.php");
-include_once("../model/M_User.php");
-require_once("../My_Smarty.php");
+include_once("../model/User_Entity.php");
+include_once("../model/User_Model.php");
+require_once("../smarty/My_Smarty.php");
 
 class Ctrl_Input_User
 {
@@ -15,11 +15,11 @@ class Ctrl_Input_User
             //if id is set => update user with id
             if ($_POST['id'] != '') {
                 $modelUser->updateUser($_POST);
-                header('Location: C_User.php');
+                header('Location: View_User_Controller.php');
                 die();
             } else {
                 $modelUser->insertUser($_POST);
-                header('Location: C_User.php');
+                header('Location: View_User_Controller.php');
                 die();
             }
         }

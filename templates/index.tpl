@@ -46,7 +46,7 @@
                         <td>{$result->address}</td>
                         <td>
                             <button class="btn btn-warning"
-                                    onclick="window.open('Input_Controller.php?id={$result->id}','_self')">Edit
+                                    onclick="window.open('Input_User_Controller.php?id={$result->id}','_self')">Edit
                             </button>
                         </td>
                         <td>
@@ -56,7 +56,7 @@
                 {/foreach}
                 </tbody>
             </table>
-            <button class="btn btn-success" onclick="window.open('Input_Controller.php','_self')">Add student</button>
+            <button class="btn btn-success" onclick="window.open('Input_User_Controller.php','_self')">Add student</button>
 
         </div>
     </div>
@@ -66,7 +66,7 @@
     <script type="text/javascript">
         function deleteUser(id) {
             if (confirm("Bạn có chắc muốn xóa")) {
-                $.post('C_User.php', {
+                $.post('View_User_Controller.php', {
                     'id': id
                 }, function (data) {
                     alert(data)

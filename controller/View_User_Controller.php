@@ -1,7 +1,7 @@
 <?php
-include_once("../model/E_User.php");
-include_once("../model/M_User.php");
-require_once("../My_Smarty.php");
+include_once("../model/User_Entity.php");
+include_once("../model/User_Model.php");
+require_once("../smarty/My_Smarty.php");
 
 class Ctrl_User
 {

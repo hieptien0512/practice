@@ -20,7 +20,7 @@ class DB
     {
         $this->servername = "localhost";
         $this->username = "root";
-        $this->password = "admin";
+        $this->password = "rockman5468";
         $this->dbname = "practice";
 
         //Initial a database connection
@@ -46,33 +46,9 @@ class DB
         return $this->con->query($query);
     }
 
-    //3.2 The query "Insert auto increase"
-    public function query_insert_autoincrease($query)
-    {
-        $result = $this->con->query($query);
-        $id_return = $this->con->insert_id;
-        return $id_return;
-    }
-
-
     public function closeCon()
     {
         $this->con->close();
     }
 
-    public function openCon()
-    {
-        //Initial a database connection
-        if ($this->con == null) {
-            $this->con = new mysqli($this->servername, $this->username, $this->password, $this->dbname);
-            if ($this->con->connect_error) {
-                die("Connection failed: " . $this->con->connect_error);
-            }
-        }
-    }
-
-    public function getCon()
-    {
-        return $this->con;
-    }
 }

@@ -8,7 +8,7 @@
     <title>Practice Project</title>
 </head>
 <body>
-<h3>1. <a href="controller/C_User.php">Quản lí tài khoản</a></h3>
+<h3>1. <a href="controller/View_User_Controller.php">Quản lí tài khoản</a></h3>
 
 </body>
 </html>

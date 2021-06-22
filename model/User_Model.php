@@ -25,21 +25,21 @@ class Model_User
         $userList = array();
         if (is_object($result)) {
             while ($row = $result->fetch_assoc()) {
-                $user_for_view = new Entity_User($row['id'], $row['name'], $row['email'], $row['tel'], $row['address']);
-                array_push($userList, $user_for_view);
+                $userForView = new Entity_User($row['id'], $row['name'], $row['email'], $row['tel'], $row['address']);
+                array_push($userList, $userForView);
             }
         }
 
         return $userList;
     }
 
-    public function getUserDetail($usid)
+    public function getUserDetail($userId)
     {
-        if (is_numeric($usid) == true) {
+        if (is_numeric($userId) == true) {
             //sql query string
             $sqlquery = "SELECT *
                      FROM user as US
-                     WHERE US.id = '$usid'";
+                     WHERE US.id = '$userId'";
             //query data
             $result = $this->db->query($sqlquery);
             if (is_object($result)) {
@@ -58,25 +58,25 @@ class Model_User
         //sql query string
         $sqlquery = "SELECT *
                      FROM user
-                     WHERE name LIKE '$name'";
+                     WHERE name LIKE '%$name%'";
         //query data
         $result = $this->db->query($sqlquery);
         $userList = array();
         if (is_object($result)) {
             while ($row = $result->fetch_assoc()) {
-                $user_for_view = new Entity_User($row['id'], $row['name'], $row['email'], $row['tel'], $row['address']);
-                array_push($userList, $user_for_view);
+                $userForView = new Entity_User($row['id'], $row['name'], $row['email'], $row['tel'], $row['address']);
+                array_push($userList, $userForView);
             }
         }
 
         return $userList;
     }
 
-    public function deleteUserById($usid)
+    public function deleteUserById($userId)
     {
-        if (is_numeric($usid) == true) {
+        if (is_numeric($userId) == true) {
             //sql query string
-            $sqlquery = "DELETE FROM user WHERE id = '$usid'";
+            $sqlquery = "DELETE FROM user WHERE id = '$userId'";
             $this->db->query($sqlquery);
             echo 'Xóa Thành Công';
         } else {
