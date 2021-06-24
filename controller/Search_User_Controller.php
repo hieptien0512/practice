@@ -12,14 +12,14 @@ class Ctrl_User
         //create new user model
         $modelUser = new Model_User();
 
-
-        //get all user model
-        $userList = $modelUser->getAllUser();
-        //load template user view
-        $template->assign('index', 1);
-        $template->assign('list', $userList);
-        $template->display("index.tpl");
-
+        if (isset($_GET['key'])) {
+            //search user
+            $userList = $modelUser->searchUser($_GET['key']);
+            //load template user view
+            $template->assign('index', 1);
+            $template->assign('list', $userList);
+            $template->display("index.tpl");
+        }
     }
 }
 

@@ -19,8 +19,8 @@
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h2 class="text-center">Danh sách thông tin user</h2>
-            <form method="get">
-                <input type="text" name="s" class="form-control" style="margin-top: 15px; margin-bottom: 15px;" placeholder="Tìm Kiếm Theo tên">
+            <form method="get" action="/practice/controller/Search_User_Controller.php">
+                <input type="text" name="key" class="form-control" style="margin-top: 15px; margin-bottom: 15px;" placeholder="Tìm Kiếm Theo tên">
             </form>
         </div>
         <div class="panel-body">
@@ -66,7 +66,7 @@
     <script type="text/javascript">
         function deleteUser(id) {
             if (confirm("Bạn có chắc muốn xóa")) {
-                $.post('View_User_Controller.php', {
+                $.post('Delete_User_Controller.php', {
                     'id': id
                 }, function (data) {
                     alert(data)

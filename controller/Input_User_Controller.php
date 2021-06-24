@@ -7,7 +7,7 @@ class Ctrl_Input_User
 {
     public function invoke()
     {
-        //sử dụng smarty template hiển thị trang input
+        //use smarty
         $template = new mySmarty();
         $modelUser = new Model_User();
         //call model if $_POST isset
@@ -23,7 +23,7 @@ class Ctrl_Input_User
                 die();
             }
         }
-        //nếu có giá trị $_get thì tiến hành truy xuất xữ liệu theo id nhận vào
+        //if $get isset, fill user data in form
         if (isset($_GET['id'])) {
             $userData = $modelUser->getUserDetail($_GET['id']);
             $template->assign('user', $userData);
