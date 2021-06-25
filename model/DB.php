@@ -45,6 +45,16 @@ class DB
     {
         return $this->con->query($query);
     }
+    public function getConnect()
+    {
+        //Initial a database connection
+        $this->con = new mysqli($this->servername, $this->username, $this->password, $this->dbname);
+        mysqli_set_charset($this->con, 'UTF8');
+        if ($this->con->connect_error) {
+            die("Connection failed: " . $this->con->connect_error);
+        }
+        return $this->con;
+    }
 
     public function closeCon()
     {

@@ -14,9 +14,8 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <style>
-        {literal}
         .myDiv{
-            background-image: url('../controller/bg.jpeg');
+            background-image: url('../bg.jpeg');
             height: 100%; width:100%;
             position:absolute;
             background-position: center;
@@ -27,7 +26,6 @@
             color: white;
             text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
         }
-        {/literal}
     </style>
 </head>
 <body >

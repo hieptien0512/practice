@@ -33,22 +33,29 @@ class Model_User
         return $userList;
     }
 
-    public function getUserDetail($userId)
+    public function getUserDetail($userEmail)
     {
-        if (is_numeric($userId) == true) {
-            //sql query string
-            $sqlquery = "SELECT *
-                     FROM user as US
-                     WHERE US.id = '$userId'";
-            //query data
-            $result = $this->db->query($sqlquery);
-            if (is_object($result)) {
-                while ($row = $result->fetch_assoc()) {
-                    $user = new Entity_User($row['id'], $row['name'], $row['email'], $row['tel'], $row['address']);
-                }
+        //
+        $con = $this->db->getConnect();
+        //sql query string
+        $sqlquery = "SELECT *
+                 FROM user as US
+                 WHERE US.email = '%s'";
+        $sqlquery = sprintf(
+            $sqlquery,
+            mysqli_real_escape_string($con, $userEmail),
+        );
+        //query data
+        $result = $this->db->query($sqlquery);
+        if (is_object($result)) {
+            while ($row = $result->fetch_assoc()) {
+                $user = new Entity_User($row['id'], $row['email'], $row['password'], $row['name'], $row['phone']);
             }
         }
-        return $user;
+        if (isset($user)){
+            return $user;
+        }
+
     }
 
     public function searchUser($name)
@@ -83,33 +90,87 @@ class Model_User
             echo 'Xóa thất bại';
         }
     }
+    public function validateInsert($postValue)
+    {
+        //validate field format
+        $error = '';
+        if (isset($postValue['phone'])) {
+            if (strlen($postValue['phone']) != 10) {
+                $error =  'Phone is 10 number character';
+            }
+            if ($postValue['phone'] == ''){
+                $error = 'Phone can not be empty';
+            }
+        }
+        //validate name field
+        if (isset($postValue['name'])) {
+            if (strlen($postValue['name']) > 40) {
+                $error =  'Name can not be longer than 40 character';
+            }
+            if ($postValue['name'] == ''){
+                $error = 'Name can not be empty';
+            }
+        }
+        //validate password field
+        if (isset($postValue['password'])) {
+            if (strlen($postValue['password'])  < 6 || strlen($postValue['password']) > 50) {
+                $error =  'Password can not be shorter than 6 or longer than 50 character';
+            }
+            if ($postValue['password'] == ''){
+                $error = 'Password can not be empty';
+            }
+        }
+        //validate email field
+        if (isset($postValue['email'])) {
+            //check email exist
+            $result = $this->getUserDetail($postValue['email']);
+            if (isset($result)) {
+                $error =  'Email is duplicate';
+            }
+            if ($postValue['email'] == ''){
+                $error = 'Email can not be empty';
+            }
+        }
+        return $error;
+    }
 
     public function insertUser($postValue)
     {
-        $name = $email = $address = $tel = '';
-        if (isset($postValue['name'])) {
-            $name = $postValue['name'];
-        }
+        //
+        $con = $this->db->getConnect();
+        //validate field format
         if (isset($postValue['email'])) {
             $email = $postValue['email'];
         }
-        if (isset($postValue['tel'])) {
-            $tel = $postValue['tel'];
+        if (isset($postValue['password'])) {
+            $password = $postValue['password'];
         }
-        if (isset($postValue['address'])) {
-            $address = $postValue['address'];
+        if (isset($postValue['name'])) {
+            $name = $postValue['name'];
+        }
+        if (isset($postValue['phone'])) {
+            $phone = $postValue['phone'];
         }
 
 
-        //check các kí tự đặt biệt
-        $name = str_replace('\'', '\\\'', $name);
-        $email = str_replace('\'', '\\\'', $email);
-        $tel = str_replace('\'', '\\\'', $tel);
-        $address = str_replace('\'', '\\\'', $address);
+        //hash password bcrypt
+        $options = [
+            'cost' => 11
+        ];
+        $password = password_hash($password, PASSWORD_BCRYPT, $options)."\n";
+
         //sql query string
-        $sqlquery = "INSERT INTO user (name, email, tel, address) VALUE ('$name', '$email', '$tel', '$address') ";
+        $sqlquery = "INSERT INTO user (email, password, name, phone) VALUE ('%s', '%s', '%s', '%s')";
+        //sql injection, sql binding variable
+        $sqlquery = sprintf(
+            $sqlquery,
+            mysqli_real_escape_string($con, $email),
+            mysqli_real_escape_string($con, $password),
+            mysqli_real_escape_string($con, $name),
+            mysqli_real_escape_string($con, $phone)
+        );
+
         $this->db->query($sqlquery);
-        echo 'Thêm user thành công';
     }
 
     public function updateUser($postValue)

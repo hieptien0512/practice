@@ -16,7 +16,7 @@
     <style>
         {literal}
         .myDiv{
-            background-image: url('../controller/bg.jpeg');
+            background-image: url('../bg.jpeg');
             height: 100%; width:100%;
             position:absolute;
             background-position: center;
@@ -67,8 +67,9 @@
                     <label class="lb text-warning" for="exampleInputPassword1">Password</label>
                     <input type="password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Enter Password">
                 </div>
-                <button type="submit" class="btn btn-outline-warning btn-">Sign In</button>
-                <button type="submit" class="btn btn-outline-warning btn-">Don't Have An Account</button>
+                <div class="text-danger font-weight-bold">ERROR MESSAGE HERE</div>
+                <button type="submit" class="btn btn-outline-warning ">Sign In</button><br>
+                <a href="#">You Don't Have An Account ?</a>
             </form>
         </div>
     </div>

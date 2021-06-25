@@ -16,7 +16,7 @@
     <style>
         {literal}
         .myDiv{
-            background-image: url('../controller/bg.jpeg');
+            background-image: url('../bg.jpeg');
             height: 100%; width:100%;
             position:absolute;
             background-position: center;
@@ -58,24 +58,26 @@
             <h2 class="strokeme display-3 text-center text-warning font-weight-bold">Sign Up</h2>
         </div>
         <div class="panel-body" >
-            <form>
+            <form method="post">
                 <div class="form-group">
                     <label class="lb text-warning" for="exampleInputEmail1">Email address</label>
-                    <input type="email" class="form-control form-control-lg" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Email">
+                    <input type="email" class="form-control form-control-lg" id="email" name="email" aria-describedby="emailHelp" placeholder="Enter Email">
                 </div>
                 <div class="form-group">
                     <label class="lb text-warning" for="exampleInputPassword1">Password</label>
-                    <input type="password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Enter Password">
+                    <input type="password" class="form-control form-control-lg" id="password" name="password" placeholder="Enter Password">
                 </div>
                 <div class="form-group">
                     <label class="lb text-warning" for="exampleInputPassword1">Name</label>
-                    <input type="text" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Enter Name">
+                    <input type="text" class="form-control form-control-lg" id="name" name="name" placeholder="Enter Name">
                 </div>
                 <div class="form-group">
                     <label class="lb text-warning" for="exampleInputPassword1">Phone</label>
-                    <input type="number" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Enter Phone">
+                    <input type="number" class="form-control form-control-lg" id="phone" name="phone" placeholder="Enter Phone">
                 </div>
-                <button type="submit" class="btn btn-outline-warning btn-">Sign Up</button>
+                <div class="text-danger font-weight-bold">{if isset($error) }{$error}{/if}</div>
+                <button class="btn btn-outline-warning btn-">Sign Up</button><br>
+                <a href="#">Already Have An Account ?</a>
             </form>
         </div>
     </div>
