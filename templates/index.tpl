@@ -40,10 +40,10 @@
                 {foreach from=$list item=result}
                     <tr>
                         <td>{$index++}</td>
-                        <td>{$result->name}</td>
-                        <td>{$result->email}</td>
-                        <td>{$result->tel}</td>
-                        <td>{$result->address}</td>
+                        <td>{$result->name|escape:"html"}</td>
+                        <td>{$result->email|escape:"html"}</td>
+                        <td>{$result->tel|escape:"html"}</td>
+                        <td>{$result->address|escape:"html"}</td>
                         <td>
                             <button class="btn btn-warning"
                                     onclick="window.open('Input_User_Controller.php?id={$result->id}','_self')">Edit
