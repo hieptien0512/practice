@@ -3,7 +3,7 @@ include_once("../model/User_Entity.php");
 include_once("../model/User_Model.php");
 require_once("../smarty/My_Smarty.php");
 
-class SignUpUser
+class SignInUser
 {
     public function invoke()
     {
@@ -15,21 +15,21 @@ class SignUpUser
         $template = new mySmarty();
         $modelUser = new Model_User();
         if (!empty($_POST)) {
-            $error = $modelUser->validateInsert($_POST);
-            if ($error != '') {
-                $template->assign('error', $error);
+            $result = $modelUser->getUserDetail($_POST['email'], $_POST['password']);
+            if ($result) {
+                $_SESSION['login'] = $result;
+                header("location:View_User_Controller.php");
             } else {
-                $modelUser->insertUser($_POST);
-                header('Location: ../index.php');
+                $template->assign('error', 'Invalid Password Or Email');
             }
         }
 
         //load template login view
-        $template->display("signup.tpl");
+        $template->display("signin.tpl");
     }
 }
 
 //////////////////////////////////////
 //2. Process
-$C_Student = new SignUpUser();
+$C_Student = new SignInUser();
 $C_Student->invoke();

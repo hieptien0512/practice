@@ -11,6 +11,11 @@ class Ctrl_User
         $template = new mySmarty();
         //create new user model
         $modelUser = new Model_User();
+        session_start();
+
+        if(!isset($_SESSION['login'])){
+            header("location:Signin_User_Controller.php");
+        }
 
 
         //get all user model

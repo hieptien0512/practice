@@ -33,7 +33,20 @@ class Model_User
         return $userList;
     }
 
-    public function getUserDetail($userEmail)
+    public function getUserDetail($userEmail, $password)
+    {
+        //
+        $user = $this->validateUserEmail($userEmail);
+        if(!isset($user)){
+            return false;
+        }
+
+        if (password_verify($password, $user->password)) {
+            return $user;
+        }
+    }
+
+    public function validateUserEmail($userEmail)
     {
         //
         $con = $this->db->getConnect();
@@ -123,7 +136,7 @@ class Model_User
         //validate email field
         if (isset($postValue['email'])) {
             //check email exist
-            $result = $this->getUserDetail($postValue['email']);
+            $result = $this->validateUserEmail($postValue['email']);
             if (isset($result)) {
                 $error =  'Email is duplicate';
             }
@@ -155,9 +168,9 @@ class Model_User
 
         //hash password bcrypt
         $options = [
-            'cost' => 11
+            'cost' => 12
         ];
-        $password = password_hash($password, PASSWORD_BCRYPT, $options)."\n";
+        $password = password_hash($password, PASSWORD_BCRYPT, $options);
 
         //sql query string
         $sqlquery = "INSERT INTO user (email, password, name, phone) VALUE ('%s', '%s', '%s', '%s')";

@@ -44,7 +44,7 @@
 <body >
 <div class="myDiv">
     <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
-        <a class="navbar-brand text-warning font-weight-bold" href="#">Survey Tool</a>
+        <a class="navbar-brand text-warning font-weight-bold" href="../index.php">Survey Tool</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -77,7 +77,7 @@
                 </div>
                 <div class="text-danger font-weight-bold">{if isset($error) }{$error}{/if}</div>
                 <button class="btn btn-outline-warning btn-">Sign Up</button><br>
-                <a href="#">Already Have An Account ?</a>
+                <a href="Signin_User_Controller.php">Already Have An Account ?</a>
             </form>
         </div>
     </div>

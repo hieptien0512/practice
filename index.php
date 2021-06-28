@@ -34,9 +34,9 @@
         <div class="panel-heading">
             <h2 class="strokeme display-1 text-center text-warning font-weight-bold">Wellcome To The Survey Tool</h2>
         </div>
-        <div class="panel-body" style="display:flex; justify-content: center; align-items: center;">
-            <button class="btn btn-outline-warning btn-lg" style="margin: 4px 2px;" >Login</button>
-            <button class="btn btn-outline-warning btn-lg" tyle="margin: 4px 2px;" onclick="window.open('controller/Signup_User_Controller.php','_self')">Sign Up</button>
+        <div class="panel-body" style="display:flex; justify-content: center; align-items: center;" >
+            <button class="btn btn-outline-warning btn-lg" style="margin: 4px 2px;" onclick="window.open('controller/Signin_User_Controller.php','_self')">Login</button>
+            <button class="btn btn-outline-warning btn-lg" style="margin: 4px 2px;" onclick="window.open('controller/Signup_User_Controller.php','_self')">Sign Up</button>
         </div>
     </div>
 </div>
