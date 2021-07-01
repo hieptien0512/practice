@@ -3,7 +3,7 @@ include_once("../model/User_Entity.php");
 include_once("../model/User_Model.php");
 require_once("../smarty/My_Smarty.php");
 
-class SignInUser
+class Sign_In_User
 {
     public function invoke()
     {
@@ -32,5 +32,5 @@ class SignInUser
 
 //////////////////////////////////////
 //2. Process
-$C_Student = new SignInUser();
+$C_Student = new Sign_In_User();
 $C_Student->invoke();

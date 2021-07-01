@@ -25,8 +25,8 @@ class Model_User
         $userList = array();
         if (is_object($result)) {
             while ($row = $result->fetch_assoc()) {
-                $userForView = new Entity_User($row['id'], $row['name'], $row['email'], $row['tel'], $row['address']);
-                array_push($userList, $userForView);
+                $user = new Entity_User($row['id'], $row['name'], $row['email'], $row['tel'], $row['address']);
+                array_push($userList, $user);
             }
         }
 
@@ -62,7 +62,7 @@ class Model_User
         $result = $this->db->query($sqlquery);
         if (is_object($result)) {
             while ($row = $result->fetch_assoc()) {
-                $user = new Entity_User($row['id'], $row['email'], $row['password'], $row['name'], $row['phone']);
+                $user = new Entity_User($row['id'], $row['email'], $row['password'], $row['name'], $row['phone'], $row['is_admin']);
             }
         }
         if (isset($user)){

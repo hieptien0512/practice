@@ -1,20 +1,20 @@
 <?php
-include_once("../model/User_Model.php");
+include_once("../model/Survey_Model.php");
 
-class Delete_User
+class Ctrl_Survey_Status
 {
     public function invoke()
     {
         //create new user model
-        $modelUser = new Model_User();
+        $modelSurvey = new Model_Survey();
         //delete user by id
         if (isset($_POST['id'])) {
-            $modelUser->deleteUserById($_POST['id']);
+            $modelSurvey->changeSurveyStatus($_POST['id'], $_POST['status']);
         }
     }
 }
 
 //////////////////////////////////////
 //2. Process
-$C_Student = new Delete_User();
+$C_Student = new Ctrl_Survey_Status();
 $C_Student->invoke();

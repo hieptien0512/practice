@@ -14,33 +14,41 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
     <style>
-        .myDiv{
+        {literal}
+        .myDiv {
             background-image: url('../bg.jpeg');
-            height: 100%; width:100%;
-            position:absolute;
+            height: 100%;
+            width: 100%;
+            position: absolute;
             background-position: center;
             background-repeat: no-repeat;
             background-size: cover;
         }
+
         .strokeme {
             color: white;
             text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
         }
+
+        {/literal}
     </style>
 </head>
-<body >
+<body>
 <div class="myDiv">
-    <div class="panel panel-primary" >
+    <div class="panel panel-primary">
         <div class="panel-heading">
             <h2 class="strokeme display-1 text-center text-warning font-weight-bold">Wellcome To The Survey Tool</h2>
         </div>
         <div class="panel-body" style="display:flex; justify-content: center; align-items: center;">
-            <button class="btn btn-outline-warning btn-lg" style="margin: 4px 2px;" >Login</button>
-            <button class="btn btn-outline-warning btn-lg" tyle="margin: 4px 2px;">Sign Up</button>
+            <button class="btn btn-outline-warning btn-lg" style="margin: 4px 2px;"
+                    onclick="window.open('Signin_User_Controller.php','_self')">Login
+            </button>
+            <button class="btn btn-outline-warning btn-lg" style="margin: 4px 2px;"
+                    onclick="window.open('Signup_User_Controller.php','_self')">Sign Up
+            </button>
         </div>
     </div>
 </div>
-
 
 
 </body>
