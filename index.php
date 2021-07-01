@@ -1,2 +1,2 @@
 <?php
-header('location:controller/Signin_User_Controller.php');
+header('location:controller/index.php');
