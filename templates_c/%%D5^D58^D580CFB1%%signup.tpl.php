@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.31, created on 2021-07-01 03:46:39
+<?php /* Smarty version 2.6.31, created on 2021-07-02 07:58:23
          compiled from signup.tpl */ ?>
 <!doctype html>
 <html lang="vi">
@@ -63,19 +63,23 @@
         <div class="panel-body" >
             <form method="post">
                 <div class="form-group">
-                    <label class="lb text-warning" for="exampleInputEmail1">Email address</label>
+                    <label class="lb text-warning" >Email address</label>
                     <input type="email" class="form-control form-control-lg" id="email" name="email" aria-describedby="emailHelp" placeholder="Enter Email">
                 </div>
                 <div class="form-group">
-                    <label class="lb text-warning" for="exampleInputPassword1">Password</label>
+                    <label class="lb text-warning" >Password</label>
                     <input type="password" class="form-control form-control-lg" id="password" name="password" placeholder="Enter Password">
                 </div>
                 <div class="form-group">
-                    <label class="lb text-warning" for="exampleInputPassword1">Name</label>
+                    <label class="lb text-warning" >Confirm Password</label>
+                    <input type="password" class="form-control form-control-lg" id="confirmPassword" name="confirmPassword" placeholder="Enter Password">
+                </div>
+                <div class="form-group">
+                    <label class="lb text-warning" >Name</label>
                     <input type="text" class="form-control form-control-lg" id="name" name="name" placeholder="Enter Name">
                 </div>
                 <div class="form-group">
-                    <label class="lb text-warning" for="exampleInputPassword1">Phone</label>
+                    <label class="lb text-warning" >Phone</label>
                     <input type="number" class="form-control form-control-lg" id="phone" name="phone" placeholder="Enter Phone">
                 </div>
                 <div class="text-danger font-weight-bold"><?php if (isset ( $this->_tpl_vars['error'] )): ?><?php echo $this->_tpl_vars['error']; ?>

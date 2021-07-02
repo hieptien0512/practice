@@ -1,7 +1,7 @@
 <?php
 require_once("../smarty/My_Smarty.php");
 
-class Index
+class LandingController
 {
     public function invoke()
     {
@@ -17,5 +17,5 @@ class Index
 
 //////////////////////////////////////
 //2. Process
-$C_Student = new Index();
-$C_Student->invoke();
+$landingController = new LandingController();
+$landingController->invoke();

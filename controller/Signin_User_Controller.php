@@ -3,7 +3,7 @@ include_once("../model/User_Entity.php");
 include_once("../model/User_Model.php");
 require_once("../smarty/My_Smarty.php");
 
-class Sign_In_User
+class SignInUserController
 {
     public function invoke()
     {
@@ -14,7 +14,7 @@ class Sign_In_User
         }
 //        //using smarty template
         $template = new mySmarty();
-        $modelUser = new Model_User();
+        $modelUser = new ModelUser();
         if (!empty($_POST)) {
             $result = $modelUser->getUserDetail($_POST['email'], $_POST['password']);
             if ($result) {
@@ -32,5 +32,5 @@ class Sign_In_User
 
 //////////////////////////////////////
 //2. Process
-$C_Student = new Sign_In_User();
-$C_Student->invoke();
+$signInController = new SignInUserController();
+$signInController->invoke();

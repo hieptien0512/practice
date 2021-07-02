@@ -85,79 +85,100 @@
         </ul>
     </div>
 </nav>
-<div class="panel panel-primary">
-    <div class="panel-heading">
-        <h2 class="strokeme display-4 text-center text-warning font-weight-bold">All Your Survey</h2>
-    </div>
-    <button class="btn btn-success"
-            onclick="window.open('Input_Survey_Controller.php','_self')">
-        Create New Survey
-    </button>
+<div class="container">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h2 class="strokeme display-4 text-center text-warning font-weight-bold">All Your Survey</h2>
+        </div>
+        <button class="btn btn-success"
+                onclick="window.open('Input_Survey_Controller.php','_self')">
+            Create New Survey
+        </button>
 
-    <div class="panel-body mt-2">
-        <table class="table table-bordered text-warning">
-            <thead>
-            <tr>
-                <th width="60rem">No.</th>
-                <th>Survey Name</th>
-                <th>Description</th>
-                <th width="100rem">Status</th>
-                <th width="100rem"></th>
-                <th width="100rem"></th>
-            </tr>
-            </thead>
-            <tbody>
-            {foreach from=$surveyList item=result}
+        <div class="panel-body mt-2">
+            <table class="table table-bordered text-warning">
+                <thead>
                 <tr>
-                    <td width="60rem">{$index++}</td>
-                    <td>{$result->name|escape:"html"}</td>
-                    <td>{$result->description|escape:"html"}</td>
-                    <td width="100rem">{if $result->status eq 0}
-                            Created
-                        {elseif $result->status eq 1}
-                            Open
-                        {else}
-                            Close
-                        {/if}
-                    </td>
-
-                    <td width="100rem">
-                        <button class="btn btn-warning"
-                                onclick="window.open('Input_Survey_Controller.php?id={$result->id}','_self')"
-                                {if $result->status neq 0}disabled{/if}>
-                            Edit
-                        </button>
-                    </td>
-                    {if $result->status eq 1}
-                        <td width="100rem">
-                            <button class="btn btn-danger" onclick="surveyStatus({$result->id}, {$result->status})">
-                                Close
-                            </button>
-                        </td>
-                    {/if}
-                    {if $result->status eq 0}
-                        <td width="100rem">
-                            <button class="btn btn-success " onclick="surveyStatus({$result->id}, {$result->status})">
-                                Open
-                            </button>
-                        </td>
-                    {/if}
-                    {if $result->status eq 2}
-                        <td width="100rem">
-                            <button class="btn btn-success "
-                                    onclick="window.open('Result_Survey_Controller.php','_self')">
-                                Result
-                            </button>
-                        </td>
-                    {/if}
-
+                    <th width="60rem">No.</th>
+                    <th>Survey Name</th>
+                    <th>Description</th>
+                    <th width="100rem">Status</th>
+                    <th width="100rem"></th>
+                    <th width="100rem"></th>
                 </tr>
-            {/foreach}
+                </thead>
+                <tbody>
+                {foreach from=$surveyList item=result}
+                    <tr>
+                        <td width="60rem">{$index++}</td>
+                        <td>{$result->name|escape:"html"}</td>
+                        <td>{$result->description|escape:"html"}</td>
+                        <td width="100rem">{if $result->status eq 0}
+                                Created
+                            {elseif $result->status eq 1}
+                                Open
+                            {else}
+                                Close
+                            {/if}
+                        </td>
 
-            </tbody>
-        </table>
+                        <td width="100rem">
+                            <button class="btn btn-warning"
+                                    onclick="window.open('Input_Survey_Controller.php?id={$result->id}','_self')"
+                                    {if $result->status neq 0}disabled{/if}>
+                                Edit
+                            </button>
+                        </td>
+                        {if $result->status eq 1}
+                            <td width="100rem">
+                                <button class="btn btn-danger" onclick="surveyStatus({$result->id}, {$result->status})">
+                                    Close
+                                </button>
+                            </td>
+                        {/if}
+                        {if $result->status eq 0}
+                            <td width="100rem">
+                                <button class="btn btn-success "
+                                        onclick="surveyStatus({$result->id}, {$result->status})">
+                                    Open
+                                </button>
+                            </td>
+                        {/if}
+                        {if $result->status eq 2}
+                            <td width="100rem">
+                                <button class="btn btn-success "
+                                        onclick="window.open('Result_Survey_Controller.php','_self')">
+                                    Result
+                                </button>
+                            </td>
+                        {/if}
 
+                    </tr>
+                {/foreach}
+
+                </tbody>
+            </table>
+
+        </div>
+        <nav aria-label="...">
+            <ul class="pagination pagination-sm justify-content-end">
+                <li class="page-item disabled">
+                    <span class="page-link text-warning">Previous</span>
+                </li>
+                <li class="page-item"><a class="page-link text-warning" href="#">1</a></li>
+                <li class="page-item active">
+                  <span class="page-link text-warning">
+                    2
+                  </span>
+                </li>
+                <li class="page-item"><a class="page-link text-warning" href="Main_Page_Controller.php?offset=3">3</a></li>
+                <li class="page-item">
+                    <a class="page-link text-warning" href="#">Next</a>
+                </li>
+            </ul>
+        </nav>
     </div>
+
 
 </div>
 {literal}

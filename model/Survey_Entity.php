@@ -1,6 +1,6 @@
 <?php
 
-class Entity_Survey
+class EntitySurvey
 {
     public $id;
     public $name;

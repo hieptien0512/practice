@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.31, created on 2021-07-01 03:46:20
+<?php /* Smarty version 2.6.31, created on 2021-07-02 09:00:56
          compiled from main_admin.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('modifier', 'escape', 'main_admin.tpl', 80, false),)), $this); ?>
@@ -91,89 +91,110 @@ smarty_core_load_plugins(array('plugins' => array(array('modifier', 'escape', 'm
         </ul>
     </div>
 </nav>
-<div class="panel panel-primary">
-    <div class="panel-heading">
-        <h2 class="strokeme display-4 text-center text-warning font-weight-bold">All Your Survey</h2>
-    </div>
-    <button class="btn btn-success"
-            onclick="window.open('Input_Survey_Controller.php','_self')">
-        Create New Survey
-    </button>
+<div class="container">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h2 class="strokeme display-4 text-center text-warning font-weight-bold">All Your Survey</h2>
+        </div>
+        <button class="btn btn-success"
+                onclick="window.open('Input_Survey_Controller.php','_self')">
+            Create New Survey
+        </button>
 
-    <div class="panel-body mt-2">
-        <table class="table table-bordered text-warning">
-            <thead>
-            <tr>
-                <th width="60rem">No.</th>
-                <th>Survey Name</th>
-                <th>Description</th>
-                <th width="100rem">Status</th>
-                <th width="100rem"></th>
-                <th width="100rem"></th>
-            </tr>
-            </thead>
-            <tbody>
-            <?php $_from = $this->_tpl_vars['surveyList']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+        <div class="panel-body mt-2">
+            <table class="table table-bordered text-warning">
+                <thead>
+                <tr>
+                    <th width="60rem">No.</th>
+                    <th>Survey Name</th>
+                    <th>Description</th>
+                    <th width="100rem">Status</th>
+                    <th width="100rem"></th>
+                    <th width="100rem"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php $_from = $this->_tpl_vars['surveyList']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
     foreach ($_from as $this->_tpl_vars['result']):
 ?>
-                <tr>
-                    <td width="60rem"><?php echo $this->_tpl_vars['index']++; ?>
+                    <tr>
+                        <td width="60rem"><?php echo $this->_tpl_vars['index']++; ?>
 </td>
-                    <td><?php echo ((is_array($_tmp=$this->_tpl_vars['result']->name)) ? $this->_run_mod_handler('escape', true, $_tmp, 'html') : smarty_modifier_escape($_tmp, 'html')); ?>
+                        <td><?php echo ((is_array($_tmp=$this->_tpl_vars['result']->name)) ? $this->_run_mod_handler('escape', true, $_tmp, 'html') : smarty_modifier_escape($_tmp, 'html')); ?>
 </td>
-                    <td><?php echo ((is_array($_tmp=$this->_tpl_vars['result']->description)) ? $this->_run_mod_handler('escape', true, $_tmp, 'html') : smarty_modifier_escape($_tmp, 'html')); ?>
+                        <td><?php echo ((is_array($_tmp=$this->_tpl_vars['result']->description)) ? $this->_run_mod_handler('escape', true, $_tmp, 'html') : smarty_modifier_escape($_tmp, 'html')); ?>
 </td>
-                    <td width="100rem"><?php if ($this->_tpl_vars['result']->status == 0): ?>
-                            Created
-                        <?php elseif ($this->_tpl_vars['result']->status == 1): ?>
-                            Open
-                        <?php else: ?>
-                            Close
-                        <?php endif; ?>
-                    </td>
-
-                    <td width="100rem">
-                        <button class="btn btn-warning"
-                                onclick="window.open('Input_Survey_Controller.php?id=<?php echo $this->_tpl_vars['result']->id; ?>
-','_self')"
-                                <?php if ($this->_tpl_vars['result']->status != 0): ?>disabled<?php endif; ?>>
-                            Edit
-                        </button>
-                    </td>
-                    <?php if ($this->_tpl_vars['result']->status == 1): ?>
-                        <td width="100rem">
-                            <button class="btn btn-danger" onclick="surveyStatus(<?php echo $this->_tpl_vars['result']->id; ?>
-, <?php echo $this->_tpl_vars['result']->status; ?>
-)">
-                                Close
-                            </button>
-                        </td>
-                    <?php endif; ?>
-                    <?php if ($this->_tpl_vars['result']->status == 0): ?>
-                        <td width="100rem">
-                            <button class="btn btn-success " onclick="surveyStatus(<?php echo $this->_tpl_vars['result']->id; ?>
-, <?php echo $this->_tpl_vars['result']->status; ?>
-)">
+                        <td width="100rem"><?php if ($this->_tpl_vars['result']->status == 0): ?>
+                                Created
+                            <?php elseif ($this->_tpl_vars['result']->status == 1): ?>
                                 Open
-                            </button>
+                            <?php else: ?>
+                                Close
+                            <?php endif; ?>
                         </td>
-                    <?php endif; ?>
-                    <?php if ($this->_tpl_vars['result']->status == 2): ?>
+
                         <td width="100rem">
-                            <button class="btn btn-success "
-                                    onclick="window.open('Result_Survey_Controller.php','_self')">
-                                Result
+                            <button class="btn btn-warning"
+                                    onclick="window.open('Input_Survey_Controller.php?id=<?php echo $this->_tpl_vars['result']->id; ?>
+','_self')"
+                                    <?php if ($this->_tpl_vars['result']->status != 0): ?>disabled<?php endif; ?>>
+                                Edit
                             </button>
                         </td>
-                    <?php endif; ?>
+                        <?php if ($this->_tpl_vars['result']->status == 1): ?>
+                            <td width="100rem">
+                                <button class="btn btn-danger" onclick="surveyStatus(<?php echo $this->_tpl_vars['result']->id; ?>
+, <?php echo $this->_tpl_vars['result']->status; ?>
+)">
+                                    Close
+                                </button>
+                            </td>
+                        <?php endif; ?>
+                        <?php if ($this->_tpl_vars['result']->status == 0): ?>
+                            <td width="100rem">
+                                <button class="btn btn-success "
+                                        onclick="surveyStatus(<?php echo $this->_tpl_vars['result']->id; ?>
+, <?php echo $this->_tpl_vars['result']->status; ?>
+)">
+                                    Open
+                                </button>
+                            </td>
+                        <?php endif; ?>
+                        <?php if ($this->_tpl_vars['result']->status == 2): ?>
+                            <td width="100rem">
+                                <button class="btn btn-success "
+                                        onclick="window.open('Result_Survey_Controller.php','_self')">
+                                    Result
+                                </button>
+                            </td>
+                        <?php endif; ?>
 
-                </tr>
-            <?php endforeach; endif; unset($_from); ?>
+                    </tr>
+                <?php endforeach; endif; unset($_from); ?>
 
-            </tbody>
-        </table>
+                </tbody>
+            </table>
 
+        </div>
+        <nav aria-label="...">
+            <ul class="pagination pagination-sm justify-content-end">
+                <li class="page-item disabled">
+                    <span class="page-link text-warning">Previous</span>
+                </li>
+                <li class="page-item"><a class="page-link text-warning" href="#">1</a></li>
+                <li class="page-item active">
+                  <span class="page-link text-warning">
+                    2
+                  </span>
+                </li>
+                <li class="page-item"><a class="page-link text-warning" href="Main_Page_Controller.php?offset=3">3</a></li>
+                <li class="page-item">
+                    <a class="page-link text-warning" href="#">Next</a>
+                </li>
+            </ul>
+        </nav>
     </div>
+
 
 </div>
 <?php echo '

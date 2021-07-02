@@ -10,10 +10,10 @@ class Ctrl_User
 //        //using smarty template
         $template = new mySmarty();
         //create new user model
-        $modelUser = new Model_User();
+        $modelUser = new ModelUser();
         session_start();
         //check session if user already logged in then display main page
-        if(!isset($_SESSION['login'])){
+        if (!isset($_SESSION['login'])) {
             header("location:Signin_User_Controller.php");
         }
 
@@ -24,11 +24,10 @@ class Ctrl_User
         $template->assign('index', 1);
         $template->assign('list', $userList);
         $template->display("index.tpl");
-
     }
 }
 
 //////////////////////////////////////
 //2. Process
-$C_Student = new Ctrl_User();
-$C_Student->invoke();
+$viewUserController = new Ctrl_User();
+$viewUserController->invoke();

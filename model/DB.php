@@ -45,6 +45,7 @@ class DB
     {
         return $this->con->query($query);
     }
+
     public function getConnect()
     {
         //Initial a database connection

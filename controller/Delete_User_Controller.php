@@ -1,12 +1,12 @@
 <?php
 include_once("../model/User_Model.php");
 
-class Delete_User
+class DeleteUserController
 {
     public function invoke()
     {
         //create new user model
-        $modelUser = new Model_User();
+        $modelUser = new ModelUser();
         //delete user by id
         if (isset($_POST['id'])) {
             $modelUser->deleteUserById($_POST['id']);
@@ -16,5 +16,5 @@ class Delete_User
 
 //////////////////////////////////////
 //2. Process
-$C_Student = new Delete_User();
-$C_Student->invoke();
+$deleteUser = new DeleteUserController();
+$deleteUser->invoke();

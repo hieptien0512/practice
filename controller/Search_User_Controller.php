@@ -10,7 +10,7 @@ class Ctrl_User
 //        //using smarty template
         $template = new mySmarty();
         //create new user model
-        $modelUser = new Model_User();
+        $modelUser = new ModelUser();
 
         if (isset($_GET['key'])) {
             //search user

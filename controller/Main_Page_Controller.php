@@ -5,14 +5,14 @@ include_once("../model/Survey_Entity.php");
 include_once("../model/Survey_Model.php");
 require_once("../smarty/My_Smarty.php");
 
-class Main_Page
+class MainController
 {
     public function invoke()
     {
 //        //using smarty template
         $template = new mySmarty();
         $template->assign('index', 1);
-        $modelSurvey = new Model_Survey();
+        $modelSurvey = new ModelSurvey();
         session_start();
         //check session if user already logged in then display main page
         if (!isset($_SESSION['login'])) {
@@ -34,5 +34,5 @@ class Main_Page
 
 //////////////////////////////////////
 //2. Process
-$C_Student = new Main_Page();
-$C_Student->invoke();
+$mainController = new MainController();
+$mainController->invoke();

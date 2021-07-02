@@ -3,13 +3,13 @@ include_once("../model/User_Entity.php");
 include_once("../model/User_Model.php");
 require_once("../smarty/My_Smarty.php");
 
-class Ctrl_Input_User
+class InputUserController
 {
     public function invoke()
     {
         //use smarty
         $template = new mySmarty();
-        $modelUser = new Model_User();
+        $modelUser = new ModelUser();
         //call model if $_POST isset
         if (!empty($_POST)) {
             //if id is set => update user with id
@@ -37,5 +37,5 @@ class Ctrl_Input_User
 //////////////////////////////////////
 //2. Process
 
-$C_Student = new Ctrl_Input_User();
-$C_Student->invoke();
+$signUpController = new InputUserController();
+$signUpController->invoke();

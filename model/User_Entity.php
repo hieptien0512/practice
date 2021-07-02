@@ -1,6 +1,6 @@
 <?php
 
-class Entity_User
+class EntityUser
 {
     public $id;
     public $email;

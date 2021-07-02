@@ -1,12 +1,12 @@
 <?php
 include_once("../model/Survey_Model.php");
 
-class Survey_Status
+class StatusSurveyController
 {
     public function invoke()
     {
         //create new user model
-        $modelSurvey = new Model_Survey();
+        $modelSurvey = new ModelSurvey();
         //delete user by id
         if (isset($_POST['id'])) {
             $modelSurvey->changeSurveyStatus($_POST['id'], $_POST['status']);
@@ -16,5 +16,5 @@ class Survey_Status
 
 //////////////////////////////////////
 //2. Process
-$C_Student = new Survey_Status();
-$C_Student->invoke();
+$statusController = new StatusSurveyController();
+$statusController->invoke();

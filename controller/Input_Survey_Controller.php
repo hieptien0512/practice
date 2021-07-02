@@ -1,7 +1,7 @@
 <?php
 include_once("../model/Survey_Model.php");
 
-class Survey_Input
+class InputSurveyController
 {
     public function invoke()
     {
@@ -11,5 +11,5 @@ class Survey_Input
 
 //////////////////////////////////////
 //2. Process
-$C_Student = new Survey_Input();
-$C_Student->invoke();
+$inputSurvey = new InputSurveyController();
+$inputSurvey->invoke();
