@@ -19,7 +19,7 @@ class Main_Page
             header("location:Signin_User_Controller.php");
         }
         if ($_SESSION['login']->is_admin) {
-            $surveyList = $modelSurvey->getAllSurveyAdmin();
+            $surveyList = $modelSurvey->getAllSurveyAdmin($_SESSION['login']->id);
             $template->assign('surveyList', $surveyList);
             $template->display("main_admin.tpl");
 

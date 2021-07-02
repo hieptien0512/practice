@@ -11,12 +11,18 @@ class Model_Survey
     }
 
     //get all survey of user from db
-    public function getAllSurveyAdmin()
+    public function getAllSurveyAdmin($userId)
     {
+        $con = $this->db->getConnect();
         //sql query variable binding
         $sqlquery = "SELECT *
                         FROM survey as SV
+                        WHERE SV.user_id = '%s'
                         ORDER BY SV.id";
+        $sqlquery = sprintf(
+            $sqlquery,
+            mysqli_real_escape_string($con,$userId),
+        );
         $surveyList = array();
         $result = $this->db->query($sqlquery);
         if (is_object($result)) {

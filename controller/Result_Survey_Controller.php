@@ -1,7 +1,7 @@
 <?php
 include_once("../model/Survey_Model.php");
 
-class Ctrl_Survey_Result
+class Survey_Result
 {
     public function invoke()
     {
@@ -11,5 +11,5 @@ class Ctrl_Survey_Result
 
 //////////////////////////////////////
 //2. Process
-$C_Student = new Ctrl_Survey_Result();
+$C_Student = new Survey_Result();
 $C_Student->invoke();

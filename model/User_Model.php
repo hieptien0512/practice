@@ -13,6 +13,7 @@ class Model_User
     //1. Get all student
     //input: no input
     //output: list of student
+    //this function is not using now
     public function getAllUser()
     {
         //sql query string
@@ -29,15 +30,15 @@ class Model_User
                 array_push($userList, $user);
             }
         }
-
         return $userList;
     }
 
+    //get user info when
     public function getUserDetail($userEmail, $password)
     {
         //
         $user = $this->validateUserEmail($userEmail);
-        if(!isset($user)){
+        if (!isset($user)) {
             return false;
         }
 
@@ -46,6 +47,7 @@ class Model_User
         }
     }
 
+    //email duplicate validation
     public function validateUserEmail($userEmail)
     {
         //
@@ -65,12 +67,12 @@ class Model_User
                 $user = new Entity_User($row['id'], $row['email'], $row['password'], $row['name'], $row['phone'], $row['is_admin']);
             }
         }
-        if (isset($user)){
+        if (isset($user)) {
             return $user;
         }
-
     }
 
+    //this function is not using now
     public function searchUser($name)
     {
         $name = str_replace('\'', '\\\'', $name);
@@ -92,6 +94,7 @@ class Model_User
         return $userList;
     }
 
+    //this function is not using now
     public function deleteUserById($userId)
     {
         if (is_numeric($userId) == true) {
@@ -103,50 +106,53 @@ class Model_User
             echo 'Xóa thất bại';
         }
     }
+
+    //validate signup input field and return if not match format
     public function validateInsert($postValue)
     {
-        //validate field format
+        //validate phone field
         $error = '';
         if (isset($postValue['phone'])) {
             if (strlen($postValue['phone']) != 10) {
-                $error =  'Phone is 10 number character';
+                $error = 'Phone is 10 number character';
             }
-            if ($postValue['phone'] == ''){
+            if ($postValue['phone'] == '') {
                 $error = 'Phone can not be empty';
             }
         }
         //validate name field
         if (isset($postValue['name'])) {
             if (strlen($postValue['name']) > 40) {
-                $error =  'Name can not be longer than 40 character';
+                $error = 'Name can not be longer than 40 character';
             }
-            if ($postValue['name'] == ''){
+            if ($postValue['name'] == '') {
                 $error = 'Name can not be empty';
             }
         }
         //validate password field
         if (isset($postValue['password'])) {
-            if (strlen($postValue['password'])  < 6 || strlen($postValue['password']) > 50) {
-                $error =  'Password can not be shorter than 6 or longer than 50 character';
+            if (strlen($postValue['password']) < 6 || strlen($postValue['password']) > 50) {
+                $error = 'Password can not be shorter than 6 or longer than 50 character';
             }
-            if ($postValue['password'] == ''){
+            if ($postValue['password'] == '') {
                 $error = 'Password can not be empty';
             }
         }
         //validate email field
         if (isset($postValue['email'])) {
-            //check email exist
+            //check email duplicate
             $result = $this->validateUserEmail($postValue['email']);
             if (isset($result)) {
-                $error =  'Email is duplicate';
+                $error = 'Email is duplicate';
             }
-            if ($postValue['email'] == ''){
+            if ($postValue['email'] == '') {
                 $error = 'Email can not be empty';
             }
         }
         return $error;
     }
 
+    //insert new user
     public function insertUser($postValue)
     {
         //
@@ -186,6 +192,7 @@ class Model_User
         $this->db->query($sqlquery);
     }
 
+    //this function is not using now
     public function updateUser($postValue)
     {
         //insert/update user nếu $_post đã được set giá trị
