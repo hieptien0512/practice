@@ -21,14 +21,15 @@ class ModelSurvey
      * input $userId int: the user id
      * output $surveylist: array object survey entity
      **/
-    public function getAllSurveyAdmin($userId)
+    public function getAllSurveyAdmin($userId, $page)
     {
+        $offset = $page * 10 - 10;
+
         //sql query variable binding
         $sqlQuery = "SELECT *
                         FROM survey as SV
                         WHERE SV.user_id = '%s'
-                        ORDER BY SV.id DESC
-                        LIMIT 10 OFFSET 5";
+                        LIMIT 10 OFFSET " . $offset;
         $sqlQuery = sprintf(
             $sqlQuery,
             mysqli_real_escape_string($this->getConnect(), $userId),
@@ -45,16 +46,49 @@ class ModelSurvey
     }
 
     /**
+     * count number of survey page for pagination ADMIN main page, each page contain 10 survey record
+     * output int number of max page
+     **/
+    public function countSurveyAdmin()
+    {
+        $sqlQuery = "SELECT COUNT(id)
+                        AS id
+                        FROM survey";
+        $result = $this->db->query($sqlQuery);
+        $count = $result->fetch_assoc();
+        $total = (int)$count['id'];
+        return $total / 10;
+    }
+
+    /**
+     * count number of survey page for pagination USER main page, each page contain 10 survey record
+     * output int number of max page
+     **/
+    public function countSurveyUser()
+    {
+        $sqlQuery = "SELECT COUNT(id) 
+                        AS id
+                        FROM survey 
+                        WHERE `status` = 1 OR `status` =2";
+        $result = $this->db->query($sqlQuery);
+        $count = $result->fetch_assoc();
+        $total = (int)$count['id'];
+        return $total / 10;
+    }
+
+    /**
      * get all survey of USER from db
      * output $surveylist: array object survey with status 1 and 2(1:opened, 2:closed)
      **/
-    public function getAllSurveyUser()
+    public function getAllSurveyUser($page)
     {
+        $offset = $page * 10 - 10;
+
         //sql query variable binding
         $sqlQuery = "SELECT *
                         FROM survey as SV
                         WHERE SV.status = 1 OR SV.status =2
-                        ORDER BY SV.id DESC";
+                        LIMIT 10 OFFSET " . $offset;
         $surveyList = [];
         $result = $this->db->query($sqlQuery);
         if (is_object($result)) {

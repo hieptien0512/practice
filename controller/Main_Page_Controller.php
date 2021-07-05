@@ -19,13 +19,27 @@ class MainController
             header("location:Signin_User_Controller.php");
         }
         if ($_SESSION['login']->is_admin) {
-            $surveyList = $modelSurvey->getAllSurveyAdmin($_SESSION['login']->id);
+            if (!isset($_GET['page'])) {
+                $_GET['page'] = 1;
+            }
+            $surveyList = $modelSurvey->getAllSurveyAdmin($_SESSION['login']->id, $_GET['page']);
             $template->assign('surveyList', $surveyList);
+            $template->assign('prePage', $_GET['page'] - 1);
+            $template->assign('thisPage', $_GET['page']);
+            $template->assign('nextPage', $_GET['page'] + 1);
+            $template->assign('maxPage', $modelSurvey->countSurveyAdmin() + 1);
             $template->display("main_admin.tpl");
 
         } else {
-            $surveyList = $modelSurvey->getAllSurveyUser();
+            if (!isset($_GET['page'])) {
+                $_GET['page'] = 1;
+            }
+            $surveyList = $modelSurvey->getAllSurveyUser($_GET['page']);
             $template->assign('surveyList', $surveyList);
+            $template->assign('prePage', $_GET['page'] - 1);
+            $template->assign('thisPage', $_GET['page']);
+            $template->assign('nextPage', $_GET['page'] + 1);
+            $template->assign('maxPage', $modelSurvey->countSurveyUser() + 1);
             $template->display("main_user.tpl");
 
         }

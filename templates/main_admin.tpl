@@ -162,19 +162,27 @@
         </div>
         <nav aria-label="...">
             <ul class="pagination pagination-sm justify-content-end">
-                <li class="page-item disabled">
-                    <span class="page-link text-warning">Previous</span>
+
+                {if $prePage neq 0}
+                    <li class="page-item {if $prePage eq 0}disabled{/if}">
+                        <a class="page-link text-warning" href="Main_Page_Controller.php?page={$prePage}">Previous</a>
+                    </li>
+                    <li class="page-item"><a class="page-link text-warning"
+                                             href="Main_Page_Controller.php?page={$prePage}">{$prePage}</a>
+                    </li>
+                {/if}
+                <li class="page-item active"><a class="page-link text-warning"
+                                                href="Main_Page_Controller.php?page={$thisPage}">{$thisPage} </a>
                 </li>
-                <li class="page-item"><a class="page-link text-warning" href="#">1</a></li>
-                <li class="page-item active">
-                  <span class="page-link text-warning">
-                    2
-                  </span>
-                </li>
-                <li class="page-item"><a class="page-link text-warning" href="Main_Page_Controller.php?offset=3">3</a></li>
-                <li class="page-item">
-                    <a class="page-link text-warning" href="#">Next</a>
-                </li>
+                {if $nextPage lt $maxPage}
+                    <li class="page-item"><a class="page-link text-warning"
+                                             href="Main_Page_Controller.php?page={$nextPage}">{$nextPage}</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link text-warning" href="Main_Page_Controller.php?page={$nextPage}">Next</a>
+                    </li>
+                {/if}
+
             </ul>
         </nav>
     </div>

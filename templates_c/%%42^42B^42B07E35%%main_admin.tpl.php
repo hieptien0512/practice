@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.31, created on 2021-07-02 09:00:56
+<?php /* Smarty version 2.6.31, created on 2021-07-05 02:39:48
          compiled from main_admin.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('modifier', 'escape', 'main_admin.tpl', 80, false),)), $this); ?>
@@ -178,19 +178,35 @@ smarty_core_load_plugins(array('plugins' => array(array('modifier', 'escape', 'm
         </div>
         <nav aria-label="...">
             <ul class="pagination pagination-sm justify-content-end">
-                <li class="page-item disabled">
-                    <span class="page-link text-warning">Previous</span>
+
+                <?php if ($this->_tpl_vars['prePage'] != 0): ?>
+                    <li class="page-item <?php if ($this->_tpl_vars['prePage'] == 0): ?>disabled<?php endif; ?>">
+                        <a class="page-link text-warning" href="Main_Page_Controller.php?page=<?php echo $this->_tpl_vars['prePage']; ?>
+">Previous</a>
+                    </li>
+                    <li class="page-item"><a class="page-link text-warning"
+                                             href="Main_Page_Controller.php?page=<?php echo $this->_tpl_vars['prePage']; ?>
+"><?php echo $this->_tpl_vars['prePage']; ?>
+</a>
+                    </li>
+                <?php endif; ?>
+                <li class="page-item active"><a class="page-link text-warning"
+                                                href="Main_Page_Controller.php?page=<?php echo $this->_tpl_vars['thisPage']; ?>
+"><?php echo $this->_tpl_vars['thisPage']; ?>
+ </a>
                 </li>
-                <li class="page-item"><a class="page-link text-warning" href="#">1</a></li>
-                <li class="page-item active">
-                  <span class="page-link text-warning">
-                    2
-                  </span>
-                </li>
-                <li class="page-item"><a class="page-link text-warning" href="Main_Page_Controller.php?offset=3">3</a></li>
-                <li class="page-item">
-                    <a class="page-link text-warning" href="#">Next</a>
-                </li>
+                <?php if ($this->_tpl_vars['nextPage'] < $this->_tpl_vars['maxPage']): ?>
+                    <li class="page-item"><a class="page-link text-warning"
+                                             href="Main_Page_Controller.php?page=<?php echo $this->_tpl_vars['nextPage']; ?>
+"><?php echo $this->_tpl_vars['nextPage']; ?>
+</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link text-warning" href="Main_Page_Controller.php?page=<?php echo $this->_tpl_vars['nextPage']; ?>
+">Next</a>
+                    </li>
+                <?php endif; ?>
+
             </ul>
         </nav>
     </div>
