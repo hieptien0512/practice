@@ -33,15 +33,9 @@
             text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
         }
 
-        .panel-body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
         tbody {
             display: block;
-            height: 500px;
+            height: 200px;
             overflow: auto;
         }
 
@@ -55,9 +49,6 @@
             width: calc(100% - 1em) /* scrollbar is average 1em/16px width, remove it from thead width */
         }
 
-        table {
-            width: 400px;
-        }
 
         {/literal}
     </style>
@@ -74,8 +65,11 @@
             <li class="nav-item ">
                 <a class="nav-link" href="Main_Page_Controller.php">Home</a>
             </li>
+            <li class="nav-item ">
+                <a class="nav-link" href="Input_Survey_Controller.php">Create Survey </a>
+            </li>
             <li class="nav-item active">
-                <a class="nav-link">Create Survey <span class="sr-only">(current)</span></a>
+                <a class="nav-link">Create Question </a>
             </li>
         </ul>
         <ul class="navbar-nav ml-auto">
@@ -94,23 +88,65 @@
     </div>
 </nav>
 <div class="container cardHolder">
-    <h2 class="strokeme display-4 text-center text-warning font-weight-bold">Create New Survey</h2>
+    <h2 class="strokeme display-5 text-center text-warning font-weight-bold">Create Question</h2>
     <form class="formSurvey" method="post">
 
         <div class="form-group mt-2">
-            <input type="text" class="form-control form-control-lg" id="name"
-                   name="name" placeholder="Survey Name">
+            <input type="text" class="form-control form-control-lg" id="surveyName" name="surveyName"
+                   placeholder="Survey Name" value="{$survey->name}" disabled>
         </div>
         <div class="form-group">
-            <input type="text" class="form-control form-control-sm" id="description"
-                   name="description" placeholder="Survey Description">
+            <input type="text" class="form-control form-control-sm" id="surveyDescription" name="surveyDescription"
+                   placeholder="Survey Description" value="{$survey->description}" disabled>
         </div>
-        <button class="btn btn-success" style="float: right;">Save</button>
+        <div class="cardList container">
+            <div class="card mt-2" id="questionCard1">
+                <div class="card-header">
+                    Question
+                    <button type="button"
+                            id="delQuestion1"
+                            class="btn btn-danger btn-sm"
+                            onclick="removeCard(1)">
+                        Delete
+                    </button>
+                </div>
+                <div class="card-body">
+                    <!-- list holder -->
+                    <div class="listHolder1">
+                        <ul class="list1">
+                            <li>
+                                <div class="form-group mt-2">
+                                    <input type="text" class="form-control"
+                                           id="question1[]"
+                                           name="question1[]"
+                                           placeholder="Question ?">
+                                </div>
+                            </li>
 
 
+                        </ul>
+                        <button type="button" id="addChoiceBtn1" class="btn btn-success btn-sm"
+                                style="float: right;" onclick="addChoice(1)">More Choice
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="btn btn-success btn-sm mt-2 mb-2"
+                id="addQuestionButton" style="float: right;">
+            Save
+        </button>
     </form>
-
+    <div class="row">
+        <button class="btn btn-warning btn-sm mt-2 mb-2 mr-2"
+                id="addQuestionButton"
+                onclick="addQuestionCard()">
+            Add New Question
+        </button>
+    </div>
 </div>
+
+<script src="../js/Input_Survey.js"></script>
 
 
 </body>

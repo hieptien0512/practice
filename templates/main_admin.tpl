@@ -70,6 +70,11 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link">Home <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item dropleft">
                 <a class="nav-link dropdown-toggle text-warning" id="navbarDropdown" role="button"
@@ -94,7 +99,6 @@
                 onclick="window.open('Input_Survey_Controller.php','_self')">
             Create New Survey
         </button>
-
         <div class="panel-body mt-2">
             <table class="table table-bordered text-warning">
                 <thead>
@@ -152,17 +156,14 @@
                                 </button>
                             </td>
                         {/if}
-
                     </tr>
                 {/foreach}
-
                 </tbody>
             </table>
 
         </div>
         <nav aria-label="...">
             <ul class="pagination pagination-sm justify-content-end">
-
                 {if $prePage neq 0}
                     <li class="page-item {if $prePage eq 0}disabled{/if}">
                         <a class="page-link text-warning" href="Main_Page_Controller.php?page={$prePage}">Previous</a>
@@ -182,12 +183,9 @@
                         <a class="page-link text-warning" href="Main_Page_Controller.php?page={$nextPage}">Next</a>
                     </li>
                 {/if}
-
             </ul>
         </nav>
     </div>
-
-
 </div>
 {literal}
     <script type="text/javascript">

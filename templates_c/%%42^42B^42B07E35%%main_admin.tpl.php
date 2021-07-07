@@ -1,7 +1,7 @@
-<?php /* Smarty version 2.6.31, created on 2021-07-05 02:39:48
+<?php /* Smarty version 2.6.31, created on 2021-07-06 08:41:33
          compiled from main_admin.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('modifier', 'escape', 'main_admin.tpl', 80, false),)), $this); ?>
+smarty_core_load_plugins(array('plugins' => array(array('modifier', 'escape', 'main_admin.tpl', 85, false),)), $this); ?>
 <!doctype html>
 <html lang="vi">
 <head>
@@ -75,6 +75,11 @@ smarty_core_load_plugins(array('plugins' => array(array('modifier', 'escape', 'm
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link">Home <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
         <ul class="navbar-nav ml-auto">
             <li class="nav-item dropleft">
                 <a class="nav-link dropdown-toggle text-warning" id="navbarDropdown" role="button"
@@ -100,7 +105,6 @@ smarty_core_load_plugins(array('plugins' => array(array('modifier', 'escape', 'm
                 onclick="window.open('Input_Survey_Controller.php','_self')">
             Create New Survey
         </button>
-
         <div class="panel-body mt-2">
             <table class="table table-bordered text-warning">
                 <thead>
@@ -168,17 +172,14 @@ smarty_core_load_plugins(array('plugins' => array(array('modifier', 'escape', 'm
                                 </button>
                             </td>
                         <?php endif; ?>
-
                     </tr>
                 <?php endforeach; endif; unset($_from); ?>
-
                 </tbody>
             </table>
 
         </div>
         <nav aria-label="...">
             <ul class="pagination pagination-sm justify-content-end">
-
                 <?php if ($this->_tpl_vars['prePage'] != 0): ?>
                     <li class="page-item <?php if ($this->_tpl_vars['prePage'] == 0): ?>disabled<?php endif; ?>">
                         <a class="page-link text-warning" href="Main_Page_Controller.php?page=<?php echo $this->_tpl_vars['prePage']; ?>
@@ -206,12 +207,9 @@ smarty_core_load_plugins(array('plugins' => array(array('modifier', 'escape', 'm
 ">Next</a>
                     </li>
                 <?php endif; ?>
-
             </ul>
         </nav>
     </div>
-
-
 </div>
 <?php echo '
     <script type="text/javascript">

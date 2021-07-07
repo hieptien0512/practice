@@ -1,7 +1,7 @@
 <?php
 include_once "DB.php";
 
-class ModelSurvey
+class ModelQuestion
 {
     protected $db;
 
@@ -21,28 +21,27 @@ class ModelSurvey
      * input $userId int: the user id
      * output $surveylist: array object survey entity
      **/
-    public function getAllSurveyAdmin($userId, $page)
+    public function getAllQuestion($surveyId)
     {
-        $offset = $page * 10 - 10;
 
         //sql query variable binding
         $sqlQuery = "SELECT *
-                        FROM survey as SV
-                        WHERE SV.user_id = '%s'
-                        LIMIT 10 OFFSET " . $offset;
+                        FROM question as Q
+                        WHERE Q.survey_id = '%s'
+                        ORDER BY Q.order";
         $sqlQuery = sprintf(
             $sqlQuery,
-            mysqli_real_escape_string($this->getConnect(), $userId),
+            mysqli_real_escape_string($this->getConnect(), $surveyId),
         );
-        $surveyList = [];
+        $questionList = [];
         $result = $this->db->query($sqlQuery);
         if (is_object($result)) {
             while ($row = $result->fetch_assoc()) {
-                $survey = new EntitySurvey($row['id'], $row['name'], $row['description'], $row['status'], $row['user_id']);
-                array_push($surveyList, $survey);
+                $question = new EntityQuestion($row['id'], $row['survey_id'], $row['question_contain'], $row['order']);
+                array_push($questionList, $question);
             }
         }
-        return $surveyList;
+        return $questionList;
     }
 
     /**
@@ -131,32 +130,32 @@ class ModelSurvey
      * input $userid: int form session value
      * output $idInsert: int id of survey insert
      **/
-    public function insertSurvey($postValue, $userId)
+    public function insertQuestion($postValue, $surveyId)
     {
-        //validate field format
-        if (isset($postValue['name'])) {
-            $name = $postValue['name'];
-        }
-        if (isset($postValue['description'])) {
-            $description = $postValue['description'];
-        }
-
-        //sql query string
-        $sqlQuery = "INSERT INTO survey (name, description, user_id) VALUE ('%s', '%s', '%s')";
-        //sql injection, sql binding variable
-        $sqlQuery = sprintf(
-            $sqlQuery,
-            mysqli_real_escape_string($this->getConnect(), $name),
-            mysqli_real_escape_string($this->getConnect(), $description),
-            mysqli_real_escape_string($this->getConnect(), $userId)
-        );
-
-        $this->db->query($sqlQuery);
-        $sqlQuery = "SELECT LAST_INSERT_ID() AS id";
-        $result = $this->db->query($sqlQuery);
-        $idInsert = $result->fetch_assoc();
-        $idInsert = (int)$idInsert['id'];
-        return $idInsert;
+//        //validate field format
+//        if (isset($postValue['name'])) {
+//            $name = $postValue['name'];
+//        }
+//        if (isset($postValue['description'])) {
+//            $description = $postValue['description'];
+//        }
+//
+//        //sql query string
+//        $sqlQuery = "INSERT INTO survey (name, description, user_id) VALUE ('%s', '%s', '%s')";
+//        //sql injection, sql binding variable
+//        $sqlQuery = sprintf(
+//            $sqlQuery,
+//            mysqli_real_escape_string($this->getConnect(), $name),
+//            mysqli_real_escape_string($this->getConnect(), $description),
+//            mysqli_real_escape_string($this->getConnect(), $userId)
+//        );
+//
+//        $this->db->query($sqlQuery);
+//        $sqlQuery = "SELECT LAST_INSERT_ID() AS id";
+//        $result = $this->db->query($sqlQuery);
+//        $idInsert = $result->fetch_assoc();
+//        $idInsert = (int)$idInsert['id'];
+//        return $idInsert;
     }
 
     /**
