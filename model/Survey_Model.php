@@ -18,8 +18,8 @@ class ModelSurvey
 
     /**
      * get all survey of ADMIN from db
-     * input $userId int: the user id
-     * output $surveylist: array object survey entity
+     * @param $userId int: the user id
+     * @return $surveylist: array object survey entity
      **/
     public function getAllSurveyAdmin($userId, $page)
     {
@@ -29,6 +29,7 @@ class ModelSurvey
         $sqlQuery = "SELECT *
                         FROM survey as SV
                         WHERE SV.user_id = '%s'
+                        ORDER BY SV.id DESC
                         LIMIT 10 OFFSET " . $offset;
         $sqlQuery = sprintf(
             $sqlQuery,
@@ -47,7 +48,7 @@ class ModelSurvey
 
     /**
      * count number of survey page for pagination ADMIN main page, each page contain 10 survey record
-     * output int number of max page
+     * @return int number of max page
      **/
     public function countSurveyAdmin()
     {
@@ -62,7 +63,7 @@ class ModelSurvey
 
     /**
      * count number of survey page for pagination USER main page, each page contain 10 survey record
-     * output int number of max page
+     * @return int number of max page
      **/
     public function countSurveyUser()
     {
@@ -78,7 +79,7 @@ class ModelSurvey
 
     /**
      * get all survey of USER from db
-     * output $surveylist: array object survey with status 1 and 2(1:opened, 2:closed)
+     * @return $surveylist: array object survey with status 1 and 2(1:opened, 2:closed)
      **/
     public function getAllSurveyUser($page)
     {
@@ -102,8 +103,8 @@ class ModelSurvey
 
     /**
      * change survey status form 0->1 and 1->2 in db
-     * input $surveyId int: the id of survey
-     * input $surveyStatus int: the status of survey
+     * @param $surveyId int: the id of survey
+     * @param $surveyStatus int: the status of survey
      **/
     public function changeSurveyStatus($surveyId, $surveyStatus)
     {
@@ -127,8 +128,8 @@ class ModelSurvey
 
     /**
      * insert SURVEY in to db table survey
-     * input $postValue: array string of email, name, phone, password
-     * input $userid: int form session value
+     * @param $postValue : array string of email, name, phone, password
+     * @param $userId : int form session value
      * output $idInsert: int id of survey insert
      **/
     public function insertSurvey($postValue, $userId)
@@ -160,21 +161,22 @@ class ModelSurvey
     }
 
     /**
-     * insert SURVEY in to db table survey
-     * input $postValue: array string of email, name, phone, password
-     * input $userid: int form session value
-     * output $idInsert: int id of survey insert
+     * query data of survey in DB
+     * @param $surveyId : int id of survey
+     * @param $userId : int id of user
+     * @return $survey : EntitySurvey
      **/
-    public function getSurveyDetail($surveyId)
+    public function getSurveyDetail($surveyId, $userId)
     {
         //sql query variable binding
         $sqlQuery = "SELECT *
                         FROM survey as SV
-                        WHERE SV.id = '%s' ";
+                        WHERE SV.id = '%s' AND SV.user_id = '%s' ";
 
         $sqlQuery = sprintf(
             $sqlQuery,
             mysqli_real_escape_string($this->getConnect(), $surveyId),
+            mysqli_real_escape_string($this->getConnect(), $userId)
         );
 
         $result = $this->db->query($sqlQuery);

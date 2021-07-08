@@ -1,10 +1,11 @@
-/**
- * onlcick addChoiceBtn will create new input filed for choice
- **/
 const formQuestion = document.querySelector('.formSurvey')
 let indexChoice = 1;
 let indexQuestion = 1;
 
+/**
+ * Create li contain choice input and delete li button
+ * @param index int: id of each element
+ **/
 function createLi(index) {
     const choice = document.createElement('div');
     choice.setAttribute("class", "row");
@@ -21,6 +22,8 @@ function createLi(index) {
     inputChoice.setAttribute("id", "question" + index + "[]");
     inputChoice.setAttribute("name", "question" + index + "[]");
     inputChoice.setAttribute("placeholder", "Choice");
+    inputChoice.setAttribute("required", "");
+    inputChoice.required = true;
 
     questionChoice.innerHTML += inputChoice.outerHTML;
 
@@ -32,7 +35,7 @@ function createLi(index) {
     delBtn.setAttribute("type", "button");
     delBtn.setAttribute("id", "delBtn" + indexChoice);
     delBtn.setAttribute("class", "btn btn-danger btn-sm");
-    delBtn.setAttribute("onclick", "removeChoice(" + indexChoice + ")");
+    delBtn.setAttribute("onclick", "removeChoice(" + indexChoice + "," + index + ")");
     delBtn.appendChild(document.createTextNode("X"));
 
     deleteChoice.innerHTML += delBtn.outerHTML;
@@ -43,6 +46,10 @@ function createLi(index) {
     return li;
 }
 
+/**
+ * Append li of choice in to ul list
+ * @param index int: id of each element
+ **/
 function addChoice(index) {
     indexChoice++;
 
@@ -53,23 +60,42 @@ function addChoice(index) {
     return ul;
 }
 
-function removeChoice(index) {
-    let choice = document.getElementById('choice' + index);
-    choice.parentElement.remove();
+/**
+ * Remove choice from question card
+ * @param index int: id of each element
+ * @param indexQuestion int: id of each question card
+ **/
+function removeChoice(index, indexQuestion) {
+    let list = formQuestion.querySelector('.list' + indexQuestion);
+    let li = list.childElementCount;
+    if (li > 2) {
+        let choice = document.getElementById('choice' + index);
+        choice.parentElement.remove();
+    } else {
+        alert('Can not delete all choice of a question');
+    }
+
 }
 
+/**
+ * remove question card from form post
+ * @param index int: id of each element
+ **/
 function removeCard(index) {
-    let card = document.getElementById('questionCard'+index);
+    let card = document.getElementById('questionCard' + index);
     card.remove();
 }
 
+/**
+ * create question card
+ **/
 function createCard() {
     indexQuestion++;
     indexChoice++;
 
     const card = document.createElement('div');
     card.setAttribute("class", "card mt-2");
-    card.setAttribute("id", "questionCard"+indexQuestion);
+    card.setAttribute("id", "questionCard" + indexQuestion);
 
     const buttonDelCard = document.createElement('button');
     buttonDelCard.setAttribute("type", "button");
@@ -98,6 +124,8 @@ function createCard() {
     inputQuestion.setAttribute("name", "question" + indexQuestion + "[]");
     inputQuestion.setAttribute("placeholder", "Question ?");
     inputQuestion.setAttribute("class", "form-control");
+    inputQuestion.setAttribute("required", "");
+    inputQuestion.required = true;
 
     const buttonAddChoice = document.createElement('button');
     buttonAddChoice.setAttribute("type", "button");
@@ -129,11 +157,12 @@ function createCard() {
     return card;
 }
 
+/**
+ * append card to cardlist
+ **/
 function addQuestionCard() {
     const cardHolder = formQuestion.querySelector('.cardList');
-
     cardHolder.appendChild(createCard());
-
 }
 
 

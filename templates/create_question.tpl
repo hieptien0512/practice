@@ -119,10 +119,21 @@
                                     <input type="text" class="form-control"
                                            id="question1[]"
                                            name="question1[]"
-                                           placeholder="Question ?">
+                                           placeholder="Question ?"
+                                           required>
                                 </div>
                             </li>
-
+                            <li>
+                                <div class="row" id="choice1">
+                                    <div class="form-group col-sm-11" name="questionChoice1" id="questionChoice1">
+                                        <input type="text" class="form-control form-control-sm" id="question1[]" name="question1[]"
+                                               placeholder="Choice" required>
+                                    </div>
+                                    <div class="form-group col-sm-1" id="deleteChoice1">
+                                        <button type="button" id="delBtn2" class="btn btn-danger btn-sm" onclick="removeChoice(1,1)">X</button>
+                                    </div>
+                                </div>
+                            </li>
 
                         </ul>
                         <button type="button" id="addChoiceBtn1" class="btn btn-success btn-sm"
@@ -132,6 +143,7 @@
                 </div>
             </div>
         </div>
+        <div class="text-danger font-weight-bold">{if isset($error) }{$error}{/if}</div>
         <button class="btn btn-success btn-sm mt-2 mb-2"
                 id="addQuestionButton" style="float: right;">
             Save
@@ -147,7 +159,6 @@
 </div>
 
 <script src="../js/Input_Survey.js"></script>
-
-
 </body>
+
 </html>

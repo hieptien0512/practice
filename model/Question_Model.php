@@ -1,5 +1,6 @@
 <?php
 include_once "DB.php";
+include_once "Choice_Model.php";
 
 class ModelQuestion
 {
@@ -17,9 +18,9 @@ class ModelQuestion
     }
 
     /**
-     * get all survey of ADMIN from db
-     * input $userId int: the user id
-     * output $surveylist: array object survey entity
+     * get all question of survey from db
+     * @param $surveyId int: id of survey
+     * @return $questionList array: EntityQuestion
      **/
     public function getAllQuestion($surveyId)
     {
@@ -44,144 +45,70 @@ class ModelQuestion
         return $questionList;
     }
 
-    /**
-     * count number of survey page for pagination ADMIN main page, each page contain 10 survey record
-     * output int number of max page
-     **/
-    public function countSurveyAdmin()
-    {
-        $sqlQuery = "SELECT COUNT(id)
-                        AS id
-                        FROM survey";
-        $result = $this->db->query($sqlQuery);
-        $count = $result->fetch_assoc();
-        $total = (int)$count['id'];
-        return $total / 10;
-    }
 
     /**
-     * count number of survey page for pagination USER main page, each page contain 10 survey record
-     * output int number of max page
+     * insert QUESTION and choice in to db table survey
+     * @param $postValue : array string of question array, each question contain array of choice
+     * @param $surveyId : int surveyId value
      **/
-    public function countSurveyUser()
+    public function inputQuestion($postValue, $surveyId)
     {
-        $sqlQuery = "SELECT COUNT(id) 
-                        AS id
-                        FROM survey 
-                        WHERE `status` = 1 OR `status` =2";
-        $result = $this->db->query($sqlQuery);
-        $count = $result->fetch_assoc();
-        $total = (int)$count['id'];
-        return $total / 10;
-    }
+        $modelChoice = new ModelChoice();
 
-    /**
-     * get all survey of USER from db
-     * output $surveylist: array object survey with status 1 and 2(1:opened, 2:closed)
-     **/
-    public function getAllSurveyUser($page)
-    {
-        $offset = $page * 10 - 10;
+        for ($i = 1; $i <= count($postValue); $i++) {
+            $questionId = $this->insertQuestion($postValue["question$i"][0], $surveyId, $i);
 
-        //sql query variable binding
-        $sqlQuery = "SELECT *
-                        FROM survey as SV
-                        WHERE SV.status = 1 OR SV.status =2
-                        LIMIT 10 OFFSET " . $offset;
-        $surveyList = [];
-        $result = $this->db->query($sqlQuery);
-        if (is_object($result)) {
-            while ($row = $result->fetch_assoc()) {
-                $survey = new EntitySurvey($row['id'], $row['name'], $row['description'], $row['status'], $row['user_id']);
-                array_push($surveyList, $survey);
+            for ($j = 1; $j < count($postValue["question$i"]); $j++) {
+                $modelChoice->insertChoice($postValue["question$i"][$j], $questionId, $j);
+
             }
         }
-        return $surveyList;
     }
 
     /**
-     * change survey status form 0->1 and 1->2 in db
-     * input $surveyId int: the id of survey
-     * input $surveyStatus int: the status of survey
+     * validate all input field not space or null
+     * @param $postValue : array string of question array, each question contain array of choice
+     * @param $surveyId : int surveyId value
+     * @return $error : string error
      **/
-    public function changeSurveyStatus($surveyId, $surveyStatus)
+    public function validateInputQuestion($postValue, $surveyId)
     {
-        //if survey status is 0 means created then update to 1 means open
-        if ($surveyStatus == 0) {
-            $status = 1;
-        } else {
-            //if survey status is 0 means created then update to 1 means open
-            $status = 2;
+        $error = '';
+        foreach ($postValue as $item) {
+            foreach ($item as $value) {
+                if ($value == '') {
+                    $error = 'You can not insert empty question or empty choice';
+                }
+            }
         }
-        $sqlQuery = "UPDATE survey
-                        SET status = '$status'
-                        WHERE id = '%s'";
+        return $error;
+    }
+
+    /**
+     * insert QUESTION in to db table survey
+     * @param $question : string  of question content
+     * @param $surveyId : int surveyId value
+     * @param $order : int question ordered number
+     * @return $idInsert : int id of question just insert into db
+     **/
+    public function insertQuestion($question, $surveyId, $order)
+    {
+        //sql query string
+        $sqlQuery = "INSERT INTO question (survey_id, question_content, `order`) 
+                        VALUE ('%s', '%s', '%s')";
+        //sql injection, sql binding variable
         $sqlQuery = sprintf(
             $sqlQuery,
             mysqli_real_escape_string($this->getConnect(), $surveyId),
+            mysqli_real_escape_string($this->getConnect(), $question),
+            mysqli_real_escape_string($this->getConnect(), $order)
         );
-        //excute query update survey status
+
         $this->db->query($sqlQuery);
-    }
-
-    /**
-     * insert SURVEY in to db table survey
-     * input $postValue: array string of email, name, phone, password
-     * input $userid: int form session value
-     * output $idInsert: int id of survey insert
-     **/
-    public function insertQuestion($postValue, $surveyId)
-    {
-//        //validate field format
-//        if (isset($postValue['name'])) {
-//            $name = $postValue['name'];
-//        }
-//        if (isset($postValue['description'])) {
-//            $description = $postValue['description'];
-//        }
-//
-//        //sql query string
-//        $sqlQuery = "INSERT INTO survey (name, description, user_id) VALUE ('%s', '%s', '%s')";
-//        //sql injection, sql binding variable
-//        $sqlQuery = sprintf(
-//            $sqlQuery,
-//            mysqli_real_escape_string($this->getConnect(), $name),
-//            mysqli_real_escape_string($this->getConnect(), $description),
-//            mysqli_real_escape_string($this->getConnect(), $userId)
-//        );
-//
-//        $this->db->query($sqlQuery);
-//        $sqlQuery = "SELECT LAST_INSERT_ID() AS id";
-//        $result = $this->db->query($sqlQuery);
-//        $idInsert = $result->fetch_assoc();
-//        $idInsert = (int)$idInsert['id'];
-//        return $idInsert;
-    }
-
-    /**
-     * insert SURVEY in to db table survey
-     * input $postValue: array string of email, name, phone, password
-     * input $userid: int form session value
-     * output $idInsert: int id of survey insert
-     **/
-    public function getSurveyDetail($surveyId)
-    {
-        //sql query variable binding
-        $sqlQuery = "SELECT *
-                        FROM survey as SV
-                        WHERE SV.id = '%s' ";
-
-        $sqlQuery = sprintf(
-            $sqlQuery,
-            mysqli_real_escape_string($this->getConnect(), $surveyId),
-        );
-
+        $sqlQuery = "SELECT LAST_INSERT_ID() AS id";
         $result = $this->db->query($sqlQuery);
-        if (is_object($result)) {
-            while ($row = $result->fetch_assoc()) {
-                $survey = new EntitySurvey($row['id'], $row['name'], $row['description'], $row['status'], $row['user_id']);
-            }
-        }
-        return $survey;
+        $idInsert = $result->fetch_assoc();
+        $idInsert = (int)$idInsert['id'];
+        return $idInsert;
     }
 }

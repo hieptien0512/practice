@@ -11,42 +11,38 @@ class InputQuestionController
 {
     public function invoke()
     {
-        //using smarty template
-        $template = new mySmarty();
-        $modelSurvey = new ModelSurvey();
-        $modelQuestion = new ModelQuestion();
         session_start();
         //check session if user already logged in then display main page
         if (!isset($_SESSION['login'])) {
             header("location:Signin_User_Controller.php");
         }
-        if ($_SESSION['login']->is_admin) {
-            if (isset($_GET['surveyId'])) {
-                $survey = $modelSurvey->getSurveyDetail($_GET['surveyId']);
-                $template->assign('index', 1);
-                $template->assign('survey', $survey);
-                $template->assign('index', 1);
-                if (!empty($_POST)) {
-                    var_dump($_POST);
-//                    $modelQuestion->insertQuestion($_POST, $_GET['surveyId']);
-                }
+        //using smarty template
+        $template = new mySmarty();
+        $modelSurvey = new ModelSurvey();
+        $modelQuestion = new ModelQuestion();
 
-            } else {
-                header('location:Main_Page_Controller.php');
-
-            }
-
-
-//            if (!empty($_POST)) {
-//                $modelSurvey->insertSurvey($_POST, $_SESSION['login']->id);
-//                header('location:Input_Question_Controller.php');
-//            }
-        } else {
+        if (!$_SESSION['login']->is_admin || !isset($_GET['surveyId'])) {
             header('location:Main_Page_Controller.php');
+        } else {
+            $survey = $modelSurvey->getSurveyDetail($_GET['surveyId'], $_SESSION['login']->id);
+            if (isset($survey)) {
+                $template->assign('survey', $survey);
+            } else {
+                header('location:Input_Survey_Controller.php');
+            }
+            if (!empty($_POST)) {
+                $error = $modelQuestion->validateInputQuestion($_POST, $_GET['surveyId']);
+                //check validate if not have error then insert new question
+                if ($error != '') {
+                    $template->assign('error', $error);
+                } else {
+                    $modelQuestion->inputQuestion($_POST, $_GET['surveyId']);
+                    header('location:Main_Page_Controller.php');
+                }
+            }
         }
 
         $template->display("create_question.tpl");
-
     }
 }
 

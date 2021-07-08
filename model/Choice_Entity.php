@@ -14,7 +14,5 @@ class EntityChoice
         $this->choice = $_choice;
         $this->order = $_order;
     }
-
-
 }
 
