@@ -45,15 +45,15 @@ class ModelUser
     public function validateUserEmail($userEmail)
     {
         //sql query string
-        $sqlQuery = "SELECT *
+        $sql = "SELECT *
                  FROM user as US
                  WHERE US.email = '%s'";
-        $sqlQuery = sprintf(
-            $sqlQuery,
+        $sql = sprintf(
+            $sql,
             mysqli_real_escape_string($this->getConnect(), $userEmail),
         );
         //query data
-        $result = $this->db->query($sqlQuery);
+        $result = $this->db->query($sql);
         if (is_object($result)) {
             while ($row = $result->fetch_assoc()) {
                 $user = new EntityUser($row['id'], $row['email'], $row['password'], $row['name'], $row['phone'], $row['is_admin']);
@@ -153,17 +153,17 @@ class ModelUser
         $password = password_hash($password, PASSWORD_BCRYPT, $options);
 
         //sql query string
-        $sqlQuery = "INSERT INTO user (email, password, name, phone) VALUE ('%s', '%s', '%s', '%s')";
+        $sql = "INSERT INTO user (email, password, name, phone) VALUE ('%s', '%s', '%s', '%s')";
         //sql injection, sql binding variable
-        $sqlQuery = sprintf(
-            $sqlQuery,
+        $sql = sprintf(
+            $sql,
             mysqli_real_escape_string($this->getConnect(), $email),
             mysqli_real_escape_string($this->getConnect(), $password),
             mysqli_real_escape_string($this->getConnect(), $name),
             mysqli_real_escape_string($this->getConnect(), $phone)
         );
 
-        $this->db->query($sqlQuery);
+        $this->db->query($sql);
     }
 
     /**
@@ -185,12 +185,12 @@ class ModelUser
 //    public function getAllUser()
 //    {
 //        //sql query string
-//        $sqlQuery = "SELECT *
+//        $sql = "SELECT *
 //                     FROM user as US
 //                     ORDER BY US.name ";
 //
 //        //query data
-//        $result = $this->db->query($sqlQuery);
+//        $result = $this->db->query($sql);
 //        $userList = [];
 //        if (is_object($result)) {
 //            while ($row = $result->fetch_assoc()) {
@@ -231,8 +231,8 @@ class ModelUser
 //        $address = str_replace('\'', '\\\'', $address);
 //        $id = str_replace('\'', '\\\'', $id);
 //        //sql query string
-//        $sqlQuery = "UPDATE user SET name = '$name', email = '$email', tel = '$tel', address = '$address' WHERE id=" . $id;
-//        $this->db->query($sqlQuery);
+//        $sql = "UPDATE user SET name = '$name', email = '$email', tel = '$tel', address = '$address' WHERE id=" . $id;
+//        $this->db->query($sql);
 //        echo 'Sửa user thành công';
 //    }
 
@@ -243,8 +243,8 @@ class ModelUser
 //    {
 //        if (is_numeric($userId) == true) {
 //            //sql query string
-//            $sqlQuery = "DELETE FROM user WHERE id = '$userId'";
-//            $this->db->query($sqlQuery);
+//            $sql = "DELETE FROM user WHERE id = '$userId'";
+//            $this->db->query($sql);
 //            echo 'Xóa Thành Công';
 //        } else {
 //            echo 'Xóa thất bại';
@@ -259,11 +259,11 @@ class ModelUser
 //        $name = str_replace('\'', '\\\'', $name);
 //
 //        //sql query string
-//        $sqlQuery = "SELECT *
+//        $sql = "SELECT *
 //                     FROM user
 //                     WHERE name LIKE '%$name%'";
 //        //query data
-//        $result = $this->db->query($sqlQuery);
+//        $result = $this->db->query($sql);
 //        $userList = [];
 //        if (is_object($result)) {
 //            while ($row = $result->fetch_assoc()) {

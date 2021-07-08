@@ -26,16 +26,16 @@ class ModelQuestion
     {
 
         //sql query variable binding
-        $sqlQuery = "SELECT *
+        $sql = "SELECT *
                         FROM question as Q
                         WHERE Q.survey_id = '%s'
                         ORDER BY Q.order";
-        $sqlQuery = sprintf(
-            $sqlQuery,
+        $sql = sprintf(
+            $sql,
             mysqli_real_escape_string($this->getConnect(), $surveyId),
         );
         $questionList = [];
-        $result = $this->db->query($sqlQuery);
+        $result = $this->db->query($sql);
         if (is_object($result)) {
             while ($row = $result->fetch_assoc()) {
                 $question = new EntityQuestion($row['id'], $row['survey_id'], $row['question_contain'], $row['order']);
@@ -94,19 +94,19 @@ class ModelQuestion
     public function insertQuestion($question, $surveyId, $order)
     {
         //sql query string
-        $sqlQuery = "INSERT INTO question (survey_id, question_content, `order`) 
+        $sql = "INSERT INTO question (survey_id, question_content, `order`) 
                         VALUE ('%s', '%s', '%s')";
         //sql injection, sql binding variable
-        $sqlQuery = sprintf(
-            $sqlQuery,
+        $sql = sprintf(
+            $sql,
             mysqli_real_escape_string($this->getConnect(), $surveyId),
             mysqli_real_escape_string($this->getConnect(), $question),
             mysqli_real_escape_string($this->getConnect(), $order)
         );
 
-        $this->db->query($sqlQuery);
-        $sqlQuery = "SELECT LAST_INSERT_ID() AS id";
-        $result = $this->db->query($sqlQuery);
+        $this->db->query($sql);
+        $sql = "SELECT LAST_INSERT_ID() AS id";
+        $result = $this->db->query($sql);
         $idInsert = $result->fetch_assoc();
         $idInsert = (int)$idInsert['id'];
         return $idInsert;

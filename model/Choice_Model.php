@@ -25,16 +25,16 @@ class ModelChoice
     public function insertChoice($choice, $questionId, $order)
     {
         //sql query string
-        $sqlQuery = "INSERT INTO choice (question_id, choice_content, `order`) 
+        $sql = "INSERT INTO choice (question_id, choice_content, `order`) 
                         VALUE ('%s', '%s', '%s')";
         //sql injection, sql binding variable
-        $sqlQuery = sprintf(
-            $sqlQuery,
+        $sql = sprintf(
+            $sql,
             mysqli_real_escape_string($this->getConnect(), $questionId),
             mysqli_real_escape_string($this->getConnect(), $choice),
             mysqli_real_escape_string($this->getConnect(), $order)
         );
 
-        $this->db->query($sqlQuery);
+        $this->db->query($sql);
     }
 }

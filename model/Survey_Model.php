@@ -26,17 +26,17 @@ class ModelSurvey
         $offset = $page * 10 - 10;
 
         //sql query variable binding
-        $sqlQuery = "SELECT *
+        $sql = "SELECT *
                         FROM survey as SV
                         WHERE SV.user_id = '%s'
                         ORDER BY SV.id DESC
                         LIMIT 10 OFFSET " . $offset;
-        $sqlQuery = sprintf(
-            $sqlQuery,
+        $sql = sprintf(
+            $sql,
             mysqli_real_escape_string($this->getConnect(), $userId),
         );
         $surveyList = [];
-        $result = $this->db->query($sqlQuery);
+        $result = $this->db->query($sql);
         if (is_object($result)) {
             while ($row = $result->fetch_assoc()) {
                 $survey = new EntitySurvey($row['id'], $row['name'], $row['description'], $row['status'], $row['user_id']);
@@ -52,10 +52,10 @@ class ModelSurvey
      **/
     public function countSurveyAdmin()
     {
-        $sqlQuery = "SELECT COUNT(id)
+        $sql = "SELECT COUNT(id)
                         AS id
                         FROM survey";
-        $result = $this->db->query($sqlQuery);
+        $result = $this->db->query($sql);
         $count = $result->fetch_assoc();
         $total = (int)$count['id'];
         return $total / 10;
@@ -67,11 +67,11 @@ class ModelSurvey
      **/
     public function countSurveyUser()
     {
-        $sqlQuery = "SELECT COUNT(id) 
+        $sql = "SELECT COUNT(id) 
                         AS id
                         FROM survey 
                         WHERE `status` = 1 OR `status` =2";
-        $result = $this->db->query($sqlQuery);
+        $result = $this->db->query($sql);
         $count = $result->fetch_assoc();
         $total = (int)$count['id'];
         return $total / 10;
@@ -86,12 +86,12 @@ class ModelSurvey
         $offset = $page * 10 - 10;
 
         //sql query variable binding
-        $sqlQuery = "SELECT *
+        $sql = "SELECT *
                         FROM survey as SV
                         WHERE SV.status = 1 OR SV.status =2
                         LIMIT 10 OFFSET " . $offset;
         $surveyList = [];
-        $result = $this->db->query($sqlQuery);
+        $result = $this->db->query($sql);
         if (is_object($result)) {
             while ($row = $result->fetch_assoc()) {
                 $survey = new EntitySurvey($row['id'], $row['name'], $row['description'], $row['status'], $row['user_id']);
@@ -115,15 +115,15 @@ class ModelSurvey
             //if survey status is 0 means created then update to 1 means open
             $status = 2;
         }
-        $sqlQuery = "UPDATE survey
+        $sql = "UPDATE survey
                         SET status = '$status'
                         WHERE id = '%s'";
-        $sqlQuery = sprintf(
-            $sqlQuery,
+        $sql = sprintf(
+            $sql,
             mysqli_real_escape_string($this->getConnect(), $surveyId),
         );
         //excute query update survey status
-        $this->db->query($sqlQuery);
+        $this->db->query($sql);
     }
 
     /**
@@ -143,18 +143,18 @@ class ModelSurvey
         }
 
         //sql query string
-        $sqlQuery = "INSERT INTO survey (name, description, user_id) VALUE ('%s', '%s', '%s')";
+        $sql = "INSERT INTO survey (name, description, user_id) VALUE ('%s', '%s', '%s')";
         //sql injection, sql binding variable
-        $sqlQuery = sprintf(
-            $sqlQuery,
+        $sql = sprintf(
+            $sql,
             mysqli_real_escape_string($this->getConnect(), $name),
             mysqli_real_escape_string($this->getConnect(), $description),
             mysqli_real_escape_string($this->getConnect(), $userId)
         );
 
-        $this->db->query($sqlQuery);
-        $sqlQuery = "SELECT LAST_INSERT_ID() AS id";
-        $result = $this->db->query($sqlQuery);
+        $this->db->query($sql);
+        $sql = "SELECT LAST_INSERT_ID() AS id";
+        $result = $this->db->query($sql);
         $idInsert = $result->fetch_assoc();
         $idInsert = (int)$idInsert['id'];
         return $idInsert;
@@ -169,17 +169,17 @@ class ModelSurvey
     public function getSurveyDetail($surveyId, $userId)
     {
         //sql query variable binding
-        $sqlQuery = "SELECT *
+        $sql = "SELECT *
                         FROM survey as SV
                         WHERE SV.id = '%s' AND SV.user_id = '%s' ";
 
-        $sqlQuery = sprintf(
-            $sqlQuery,
+        $sql = sprintf(
+            $sql,
             mysqli_real_escape_string($this->getConnect(), $surveyId),
             mysqli_real_escape_string($this->getConnect(), $userId)
         );
 
-        $result = $this->db->query($sqlQuery);
+        $result = $this->db->query($sql);
         if (is_object($result)) {
             while ($row = $result->fetch_assoc()) {
                 $survey = new EntitySurvey($row['id'], $row['name'], $row['description'], $row['status'], $row['user_id']);
