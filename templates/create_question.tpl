@@ -93,11 +93,11 @@
 
         <div class="form-group mt-2">
             <input type="text" class="form-control form-control-lg" id="surveyName" name="surveyName"
-                   placeholder="Survey Name" value="{$survey->name}" disabled>
+                   placeholder="Survey Name" value="{$survey->name|escape:"html"}" disabled>
         </div>
         <div class="form-group">
             <input type="text" class="form-control form-control-sm" id="surveyDescription" name="surveyDescription"
-                   placeholder="Survey Description" value="{$survey->description}" disabled>
+                   placeholder="Survey Description" value="{$survey->description|escape:"html"}" disabled>
         </div>
         <div class="cardList container">
             <div class="card mt-2" id="questionCard1">
@@ -126,11 +126,14 @@
                             <li>
                                 <div class="row" id="choice1">
                                     <div class="form-group col-sm-11" name="questionChoice1" id="questionChoice1">
-                                        <input type="text" class="form-control form-control-sm" id="question1[]" name="question1[]"
+                                        <input type="text" class="form-control form-control-sm" id="question1[]"
+                                               name="question1[]"
                                                placeholder="Choice" required>
                                     </div>
                                     <div class="form-group col-sm-1" id="deleteChoice1">
-                                        <button type="button" id="delBtn2" class="btn btn-danger btn-sm" onclick="removeChoice(1,1)">X</button>
+                                        <button type="button" id="delBtn2" class="btn btn-danger btn-sm"
+                                                onclick="removeChoice(1,1)">X
+                                        </button>
                                     </div>
                                 </div>
                             </li>
@@ -143,7 +146,7 @@
                 </div>
             </div>
         </div>
-        <div class="text-danger font-weight-bold">{if isset($error) }{$error}{/if}</div>
+        <div class="text-danger font-weight-bold">{if isset($error) }{$error|escape:"html"}{/if}</div>
         <button class="btn btn-success btn-sm mt-2 mb-2"
                 id="addQuestionButton" style="float: right;">
             Save

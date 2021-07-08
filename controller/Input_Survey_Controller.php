@@ -19,9 +19,14 @@ class InputSurveyController
         }
         if ($_SESSION['login']->is_admin) {
             if (!empty($_POST)) {
-                $idInsert = $modelSurvey->insertSurvey($_POST, $_SESSION['login']->id);
-                header("location:Input_Question_Controller.php?surveyId=$idInsert");
-                die();
+                $error = $modelSurvey->validateInputSurvey($_POST);
+                if ($error != '') {
+                    $template->assign('error', $error);
+                } else {
+                    $idInsert = $modelSurvey->insertSurvey($_POST, $_SESSION['login']->id);
+                    header("location:Input_Question_Controller.php?surveyId=$idInsert");
+                }
+
             }
         } else {
             header('location:Main_Page_Controller.php');

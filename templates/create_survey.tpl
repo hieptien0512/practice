@@ -99,12 +99,14 @@
 
         <div class="form-group mt-2">
             <input type="text" class="form-control form-control-lg" id="name"
-                   name="name" placeholder="Survey Name">
+                   name="name" placeholder="Survey Name" required>
         </div>
         <div class="form-group">
             <input type="text" class="form-control form-control-sm" id="description"
-                   name="description" placeholder="Survey Description">
+                   name="description" placeholder="Survey Description" required>
         </div>
+        <div class="text-danger font-weight-bold">{if isset($error) }{$error|escape:"html"}{/if}</div>
+
         <button class="btn btn-success" style="float: right;">Save</button>
 
 

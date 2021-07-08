@@ -187,4 +187,21 @@ class ModelSurvey
         }
         return $survey;
     }
+
+    /**
+     * validate all input field not space or null
+     * @param $postValue : array string of survey content ang description
+     * @return $error : string error
+     **/
+    public function validateInputSurvey($postValue)
+    {
+        $error = '';
+        foreach ($postValue as $item) {
+            if ($item == '') {
+                $error = 'Please fill out all field';
+
+            }
+        }
+        return $error;
+    }
 }
