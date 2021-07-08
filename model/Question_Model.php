@@ -54,13 +54,13 @@ class ModelQuestion
     public function inputQuestion($postValue, $surveyId)
     {
         $modelChoice = new ModelChoice();
+        $order = 0;
+        foreach ($postValue as $question) {
+            $order++;
+            $questionId = $this->insertQuestion($question[0], $surveyId, $order);
 
-        for ($i = 1; $i <= count($postValue); $i++) {
-            $questionId = $this->insertQuestion($postValue["question$i"][0], $surveyId, $i);
-
-            for ($j = 1; $j < count($postValue["question$i"]); $j++) {
-                $modelChoice->insertChoice($postValue["question$i"][$j], $questionId, $j);
-
+            for ($j = 1; $j < count($question); $j++) {
+                $modelChoice->insertChoice($question[$j], $questionId, $j);
             }
         }
     }
