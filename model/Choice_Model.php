@@ -18,10 +18,10 @@ class ModelChoice
 
     /**
      * insert choice in to db
-     * @param $choice string: choice content
-     * @param $questionId int: id of question contain this choice
-     * @param $order int: ordered number choice
-     **/
+     * @param string $choice choice content
+     * @param int $questionId
+     * @param int $order
+     */
     public function insertChoice($choice, $questionId, $order)
     {
         //sql query string

@@ -16,14 +16,12 @@ class ModelUser
         return $con;
     }
 
-
     /**
      * check if signin user email and password is match in db
-     * @param $userEmail string: email of user
-     * @param $password string: password of user
-     * @return return false if $userEmail does not exist
-     * @return return $user UserEntity if email and password match
-     **/
+     * @param string $userEmail
+     * @param string $password
+     * @return EntityUser|false
+     */
     public function getUserDetail($userEmail, $password)
     {
         //check if email exist return false
@@ -39,9 +37,9 @@ class ModelUser
 
     /**
      * Check if email exist in db
-     * @param $userEmail string: email of user
-     * @return return $user UserEntity if email exist in db
-     **/
+     * @param string $userEmail
+     * @return EntityUser
+     */
     public function validateUserEmail($userEmail)
     {
         //sql query string
@@ -66,9 +64,9 @@ class ModelUser
 
     /**
      * validate all input field from sign up form post
-     * @param $postValue : array string of email, name, phone, password
-     * @return $error : string if any field is invalid
-     **/
+     * @param $postValue
+     * @return string error
+     */
     public function validateInsert($postValue)
     {
         //validate phone field
@@ -134,9 +132,9 @@ class ModelUser
 
     /**
      * insert user in to db
-     * @param $postValue : array string of email, name, phone, password
+     * @param $postValue
      * password bcrypt hash before insert to db
-     **/
+     */
     public function insertUser($postValue)
     {
         //validate field format
@@ -177,5 +175,44 @@ class ModelUser
         if (isset($param)) {
             return $param;
         }
+    }
+
+    /**
+     * check user role
+     * @param $userId
+     * @return bool|mysqli_result 1:admin, 0:user
+     */
+    public function checkUserRole($userId)
+    {
+        $sql = "SELECT is_admin
+                        FROM user as US
+                        WHERE US.id = '%s'";
+        $sql = sprintf(
+            $sql,
+            mysqli_real_escape_string($this->getConnect(), $userId),
+        );
+        $result = $this->db->query($sql);
+        $role = $result->fetch_row();
+        return $role[0];
+    }
+
+    /**
+     * @param $userId
+     * @return array
+     */
+    public function getUserInfo($userId)
+    {
+        //sql query string
+        $sql = "SELECT `name`
+                 FROM user as US
+                 WHERE US.id = '%s'";
+        $sql = sprintf(
+            $sql,
+            mysqli_real_escape_string($this->getConnect(), $userId),
+        );
+        //query data
+        $result = $this->db->query($sql);
+        $name = $result->fetch_row();
+        return $name[0];
     }
 }

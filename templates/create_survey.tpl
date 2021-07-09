@@ -85,7 +85,7 @@
                     User
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <div class="dropdown-item disable">{$smarty.session.login->name|escape:"html"}</div>
+                    <div class="dropdown-item disable">{$userName|escape:"html"}</div>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="../controller/Logout_User_Controller.php">Log Out</a>
                 </div>
