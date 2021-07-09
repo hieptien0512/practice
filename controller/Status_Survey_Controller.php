@@ -5,6 +5,11 @@ class StatusSurveyController
 {
     public function invoke()
     {
+        session_start();
+        //check session if user already logged in then display main page
+        if (isset($_SESSION['login'])) {
+            header("location:Main_Page_Controller.php");
+        }
         //create new user model
         $modelSurvey = new ModelSurvey();
         //delete user by id

@@ -12,7 +12,7 @@ class SignInUserController
         if (isset($_SESSION['login'])) {
             header("location:Main_Page_Controller.php");
         }
-//        //using smarty template
+        //using smarty template
         $template = new mySmarty();
         $modelUser = new ModelUser();
         if (!empty($_POST)) {

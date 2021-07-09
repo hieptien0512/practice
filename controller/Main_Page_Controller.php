@@ -9,7 +9,7 @@ class MainController
 {
     public function invoke()
     {
-//        //using smarty template
+        //using smarty template
         $template = new mySmarty();
         $template->assign('index', 1);
         $modelSurvey = new ModelSurvey();

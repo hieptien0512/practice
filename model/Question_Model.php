@@ -17,11 +17,11 @@ class ModelQuestion
         return $con;
     }
 
+
     /**
-     * get all question of survey from db
-     * @param $surveyId int: id of survey
-     * @return $questionList array: EntityQuestion
-     **/
+     * @param $surveyId
+     * @return array
+     */
     public function getAllQuestion($surveyId)
     {
 
