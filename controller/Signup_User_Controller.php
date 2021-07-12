@@ -8,11 +8,9 @@ class SignUpUserController
     public function invoke()
     {
         session_start();
-        //check session if user already logged in then display main page
         if (isset($_SESSION['login'])) {
-            header("location:View_User_Controller.php");
+            header("location:Main_Page_Controller.php");
         }
-//        //using smarty template
         $template = new mySmarty();
         $modelUser = new ModelUser();
         if (!empty($_POST)) {
@@ -25,12 +23,9 @@ class SignUpUserController
             }
         }
 
-        //load template login view
         $template->display("signup.tpl");
     }
 }
 
-//////////////////////////////////////
-//2. Process
 $signUpController = new SignUpUserController();
 $signUpController->invoke();

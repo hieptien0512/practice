@@ -5,16 +5,16 @@ class StatusSurveyController
 {
     public function invoke()
     {
-        //create new user model
+        session_start();
+        if (isset($_SESSION['login'])) {
+            header("location:Main_Page_Controller.php");
+        }
         $modelSurvey = new ModelSurvey();
-        //delete user by id
         if (isset($_POST['id'])) {
             $modelSurvey->changeSurveyStatus($_POST['id'], $_POST['status']);
         }
     }
 }
 
-//////////////////////////////////////
-//2. Process
 $statusController = new StatusSurveyController();
 $statusController->invoke();

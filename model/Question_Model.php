@@ -1,6 +1,7 @@
 <?php
 include_once "DB.php";
 include_once "Choice_Model.php";
+include_once "Validate_Post.php";
 
 class ModelQuestion
 {
@@ -17,11 +18,11 @@ class ModelQuestion
         return $con;
     }
 
+
     /**
-     * get all question of survey from db
-     * @param $surveyId int: id of survey
-     * @return $questionList array: EntityQuestion
-     **/
+     * @param int $surveyId
+     * @return array
+     */
     public function getAllQuestion($surveyId)
     {
 
@@ -45,12 +46,11 @@ class ModelQuestion
         return $questionList;
     }
 
-
     /**
-     * insert QUESTION and choice in to db table survey
-     * @param $postValue : array string of question array, each question contain array of choice
-     * @param $surveyId : int surveyId value
-     **/
+     * insert QUESTION and choice into db table survey
+     * @param $postValue
+     * @param int $surveyId
+     */
     public function inputQuestion($postValue, $surveyId)
     {
         $modelChoice = new ModelChoice();
@@ -66,31 +66,29 @@ class ModelQuestion
     }
 
     /**
-     * validate all input field not space or null
-     * @param $postValue : array string of question array, each question contain array of choice
-     * @param $surveyId : int surveyId value
-     * @return $error : string error
-     **/
+     * validate all input field not blank
+     * @param $postValue
+     * @param int $surveyId
+     * @return string
+     */
     public function validateInputQuestion($postValue, $surveyId)
     {
         $error = '';
-        foreach ($postValue as $item) {
-            foreach ($item as $value) {
-                if ($value == '') {
-                    $error = 'You can not insert empty question or empty choice';
-                }
-            }
+        $validate = new ValidatePostValue();
+        if ($validate->validatePostQuestion($postValue, $surveyId) == false) {
+            $error = 'Invalid insert value';
         }
         return $error;
     }
 
+
     /**
      * insert QUESTION in to db table survey
-     * @param $question : string  of question content
-     * @param $surveyId : int surveyId value
-     * @param $order : int question ordered number
-     * @return $idInsert : int id of question just insert into db
-     **/
+     * @param string $question question content
+     * @param int $surveyId
+     * @param int $order
+     * @return int
+     */
     public function insertQuestion($question, $surveyId, $order)
     {
         //sql query string

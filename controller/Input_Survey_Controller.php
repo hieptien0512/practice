@@ -9,33 +9,31 @@ class InputSurveyController
 {
     public function invoke()
     {
-        //using smarty template
         $template = new mySmarty();
         $modelSurvey = new ModelSurvey();
+        $modelUser = new ModelUser();
+
         session_start();
-        //check session if user already logged in then display main page
         if (!isset($_SESSION['login'])) {
             header("location:Signin_User_Controller.php");
         }
-        if ($_SESSION['login']->is_admin) {
-            if (!empty($_POST)) {
-                $error = $modelSurvey->validateInputSurvey($_POST);
-                if ($error != '') {
-                    $template->assign('error', $error);
-                } else {
-                    $idInsert = $modelSurvey->insertSurvey($_POST, $_SESSION['login']->id);
-                    header("location:Input_Question_Controller.php?surveyId=$idInsert");
-                }
-
-            }
-        } else {
+        if ($modelUser->checkUserRole($_SESSION['login']) != 1) {
             header('location:Main_Page_Controller.php');
         }
+        if (!empty($_POST)) {
+            $error = $modelSurvey->validateInputSurvey($_POST);
+            if ($error != '') {
+                $template->assign('error', $error);
+            } else {
+                $idInsert = $modelSurvey->insertSurvey($_POST, $_SESSION['login']);
+                header("location:Input_Question_Controller.php?surveyId=$idInsert");
+            }
+        }
+        $userName = $modelUser->getUserInfo($_SESSION['login']);
+        $template->assign('userName', $userName);
         $template->display("create_survey.tpl");
     }
 }
 
-//////////////////////////////////////
-//2. Process
 $inputSurvey = new InputSurveyController();
 $inputSurvey->invoke();

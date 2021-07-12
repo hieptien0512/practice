@@ -9,7 +9,5 @@ class StartSurveyController
     }
 }
 
-//////////////////////////////////////
-//2. Process
 $startSurvey = new StartSurveyController();
 $startSurvey->invoke();

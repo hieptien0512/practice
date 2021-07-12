@@ -9,7 +9,5 @@ class SurveyResultController
     }
 }
 
-//////////////////////////////////////
-//2. Process
 $resultController = new SurveyResultController();
 $resultController->invoke();

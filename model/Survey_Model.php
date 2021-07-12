@@ -1,5 +1,6 @@
 <?php
 include_once "DB.php";
+include_once "Validate_Post.php";
 
 class ModelSurvey
 {
@@ -17,79 +18,50 @@ class ModelSurvey
     }
 
     /**
-     * get all survey of ADMIN from db
-     * @param $userId int: the user id
-     * @return $surveylist: array object survey entity
-     **/
-    public function getAllSurveyAdmin($userId, $page)
+     * check user role
+     * @param $userId
+     * @return bool|mysqli_result 1:admin, 0:user
+     */
+    public function checkUserRole($userId)
     {
-        $offset = $page * 10 - 10;
-
-        //sql query variable binding
-        $sql = "SELECT *
-                        FROM survey as SV
-                        WHERE SV.user_id = '%s'
-                        ORDER BY SV.id DESC
-                        LIMIT 10 OFFSET " . $offset;
+        $sql = "SELECT is_admin
+                        FROM user as US
+                        WHERE US.id = '%s'";
         $sql = sprintf(
             $sql,
             mysqli_real_escape_string($this->getConnect(), $userId),
         );
-        $surveyList = [];
         $result = $this->db->query($sql);
-        if (is_object($result)) {
-            while ($row = $result->fetch_assoc()) {
-                $survey = new EntitySurvey($row['id'], $row['name'], $row['description'], $row['status'], $row['user_id']);
-                array_push($surveyList, $survey);
-            }
-        }
-        return $surveyList;
+        $role = $result->fetch_row();
+        return $role[0];
     }
 
     /**
-     * count number of survey page for pagination ADMIN main page, each page contain 10 survey record
-     * @return int number of max page
-     **/
-    public function countSurveyAdmin()
-    {
-        $sql = "SELECT COUNT(id)
-                        AS id
-                        FROM survey";
-        $result = $this->db->query($sql);
-        $count = $result->fetch_assoc();
-        $total = (int)$count['id'];
-        return $total / 10;
-    }
-
-    /**
-     * count number of survey page for pagination USER main page, each page contain 10 survey record
-     * @return int number of max page
-     **/
-    public function countSurveyUser()
-    {
-        $sql = "SELECT COUNT(id) 
-                        AS id
-                        FROM survey 
-                        WHERE `status` = 1 OR `status` =2";
-        $result = $this->db->query($sql);
-        $count = $result->fetch_assoc();
-        $total = (int)$count['id'];
-        return $total / 10;
-    }
-
-    /**
-     * get all survey of USER from db
-     * @return $surveylist: array object survey with status 1 and 2(1:opened, 2:closed)
-     **/
-    public function getAllSurveyUser($page)
+     * get all survey from db
+     * @param int $userId
+     * @param int $page
+     * @return array
+     */
+    public function getAllSurvey($userId, $page)
     {
         $offset = $page * 10 - 10;
-
-        //sql query variable binding
-        $sql = "SELECT *
+        if ($this->checkUserRole($userId)) {
+            $sql = "SELECT *
+                        FROM survey as SV
+                        WHERE SV.user_id = '%s'
+                        ORDER BY SV.id DESC
+                        LIMIT 10 OFFSET " . $offset;
+            $sql = sprintf(
+                $sql,
+                mysqli_real_escape_string($this->getConnect(), $userId),
+            );
+        } else {
+            $sql = "SELECT *
                         FROM survey as SV
                         WHERE SV.status = 1 OR SV.status =2
                         LIMIT 10 OFFSET " . $offset;
+        }
+
         $surveyList = [];
         $result = $this->db->query($sql);
         if (is_object($result)) {
@@ -102,19 +74,43 @@ class ModelSurvey
     }
 
     /**
+     * count number of survey page for pagination ADMIN and USER main page, each page contain 10 survey record
+     * @param $userId
+     * @return float|int
+     */
+    public function countSurvey($userId)
+    {
+        if ($this->checkUserRole($userId)) {
+            $sql = "SELECT COUNT(id)
+                        AS id
+                        FROM survey
+                        WHERE user_id = '%s'";
+            $sql = sprintf(
+                $sql,
+                mysqli_real_escape_string($this->getConnect(), $userId),
+            );
+        } else {
+            $sql = "SELECT COUNT(id) 
+                        AS id
+                        FROM survey 
+                        WHERE `status` = 1 OR `status` =2";
+        }
+        $result = $this->db->query($sql);
+        $count = $result->fetch_assoc();
+        $total = (int)$count['id'];
+        return $total / 10;
+    }
+
+
+    /**
      * change survey status form 0->1 and 1->2 in db
-     * @param $surveyId int: the id of survey
-     * @param $surveyStatus int: the status of survey
-     **/
+     * @param int $surveyId
+     * @param int $surveyStatus
+     */
     public function changeSurveyStatus($surveyId, $surveyStatus)
     {
-        //if survey status is 0 means created then update to 1 means open
-        if ($surveyStatus == 0) {
-            $status = 1;
-        } else {
-            //if survey status is 0 means created then update to 1 means open
-            $status = 2;
-        }
+        $status = !$surveyStatus ? 1 : 2;
+
         $sql = "UPDATE survey
                         SET status = '$status'
                         WHERE id = '%s'";
@@ -122,16 +118,15 @@ class ModelSurvey
             $sql,
             mysqli_real_escape_string($this->getConnect(), $surveyId),
         );
-        //excute query update survey status
         $this->db->query($sql);
     }
 
     /**
      * insert SURVEY in to db table survey
-     * @param $postValue : array string of email, name, phone, password
-     * @param $userId : int form session value
-     * output $idInsert: int id of survey insert
-     **/
+     * @param $postValue
+     * @param int $userId
+     * @return int id of survey just inserted
+     */
     public function insertSurvey($postValue, $userId)
     {
         //validate field format
@@ -142,16 +137,14 @@ class ModelSurvey
             $description = $postValue['description'];
         }
 
-        //sql query string
         $sql = "INSERT INTO survey (name, description, user_id) VALUE ('%s', '%s', '%s')";
-        //sql injection, sql binding variable
         $sql = sprintf(
             $sql,
             mysqli_real_escape_string($this->getConnect(), $name),
             mysqli_real_escape_string($this->getConnect(), $description),
             mysqli_real_escape_string($this->getConnect(), $userId)
         );
-
+        $name = $name . "aloalo";
         $this->db->query($sql);
         $sql = "SELECT LAST_INSERT_ID() AS id";
         $result = $this->db->query($sql);
@@ -162,13 +155,12 @@ class ModelSurvey
 
     /**
      * query data of survey in DB
-     * @param $surveyId : int id of survey
-     * @param $userId : int id of user
-     * @return $survey : EntitySurvey
-     **/
+     * @param int $surveyId
+     * @param int $userId
+     * @return EntitySurvey
+     */
     public function getSurveyDetail($surveyId, $userId)
     {
-        //sql query variable binding
         $sql = "SELECT *
                         FROM survey as SV
                         WHERE SV.id = '%s' AND SV.user_id = '%s' ";
@@ -188,19 +180,18 @@ class ModelSurvey
         return $survey;
     }
 
+
     /**
      * validate all input field not space or null
-     * @param $postValue : array string of survey content ang description
-     * @return $error : string error
-     **/
+     * @param $postValue
+     * @return string error
+     */
     public function validateInputSurvey($postValue)
     {
         $error = '';
-        foreach ($postValue as $item) {
-            if ($item == '') {
-                $error = 'Please fill out all field';
-
-            }
+        $validate = new ValidatePostValue();
+        if ($validate->validatePostSurvey($postValue) == false) {
+            $error = 'Invalid insert value';
         }
         return $error;
     }
