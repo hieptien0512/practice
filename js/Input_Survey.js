@@ -104,11 +104,43 @@ function createCard() {
     buttonDelCard.setAttribute("onclick", "removeCard(" + indexQuestion + ")");
     buttonDelCard.appendChild(document.createTextNode("Delete"));
 
+    const formCheck = document.createElement('div');
+    formCheck.setAttribute("class", "form-check form-check-inline");
+    formCheck.setAttribute("id", "radio" + indexQuestion);
+
+    const multiCheck = document.createElement('input');
+    multiCheck.setAttribute("class", "form-check-input ml-4");
+    multiCheck.setAttribute("type", "radio");
+    multiCheck.setAttribute("name", "question" + indexQuestion + "[]");
+    multiCheck.setAttribute("id", "multiCheck" + indexQuestion);
+    multiCheck.setAttribute("value", "0");
+    multiCheck.setAttribute("checked", "checked");
+
+    const labelMulti = document.createElement('label');
+    labelMulti.setAttribute("class", "form-check-label");
+    labelMulti.setAttribute("for", "multiCheck" + indexQuestion);
+    labelMulti.appendChild(document.createTextNode("Multiple Choice"));
+
+    const singleCheck = document.createElement('input');
+    singleCheck.setAttribute("class", "form-check-input ml-4");
+    singleCheck.setAttribute("type", "radio");
+    singleCheck.setAttribute("name", "question" + indexQuestion + "[]");
+    singleCheck.setAttribute("id", "single" + indexQuestion);
+    singleCheck.setAttribute("value", "1");
+
+    const labelSingle = document.createElement('label');
+    labelSingle.setAttribute("class", "form-check-label");
+    labelSingle.setAttribute("for", "single" + indexQuestion);
+    labelSingle.appendChild(document.createTextNode("Single Choice"));
+
+    formCheck.innerHTML += multiCheck.outerHTML + labelMulti.outerHTML + singleCheck.outerHTML + labelSingle.outerHTML;
+
+
     const cardHeader = document.createElement('div');
     cardHeader.setAttribute("class", "card-header");
     cardHeader.appendChild(document.createTextNode("Question "));
 
-    cardHeader.innerHTML += buttonDelCard.outerHTML;
+    cardHeader.innerHTML += buttonDelCard.outerHTML + formCheck.outerHTML;
 
     const cardBody = document.createElement('div');
     cardBody.setAttribute("class", "card-body");
@@ -166,18 +198,4 @@ function addQuestionCard() {
 }
 
 
-// /**
-//  * onclick addQuestionBtn will create new car for in put new question
-//  **/
-// const cardHolder = document.querySelector('.cardHolder');
-// const addQuestionBtn = document.querySelector('#addQuestionButton');
-//
-// addQuestionBtn.addEventListener('click', () =>{
-//     const formSurvey = cardHolder.querySelector('.formSurvey');
-//     const card = cardHolder.querySelector('.card');
-//     const div = document.createElement('div');
-//     div.className = "container";
-//     div.innerHTML += card.outerHTML;
-//     formSurvey.appendChild(div);
-//
-// });
+

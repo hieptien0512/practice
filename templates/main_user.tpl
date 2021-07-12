@@ -122,7 +122,7 @@
                         {if $result->status eq 1}
                             <td width="100rem">
                                 <button class="btn btn-success"
-                                        onclick="window.open('Start_Survey_Controller.php','_self')">
+                                        onclick="window.open('Start_Survey_Controller.php?surveyId={$result->id}','_self')">
                                     Start
                                 </button>
                             </td>

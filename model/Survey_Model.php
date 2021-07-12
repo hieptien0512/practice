@@ -59,6 +59,7 @@ class ModelSurvey
             $sql = "SELECT *
                         FROM survey as SV
                         WHERE SV.status = 1 OR SV.status =2
+                        ORDER BY SV.id DESC
                         LIMIT 10 OFFSET " . $offset;
         }
 
@@ -178,6 +179,34 @@ class ModelSurvey
             }
         }
         return $survey;
+    }
+
+    /**
+     * query data of survey in DB
+     * @param int $surveyId
+     * @param int $userId
+     * @return EntitySurvey
+     */
+    public function getSurveyDetailUser($surveyId)
+    {
+        $sql = "SELECT *
+                        FROM survey as SV
+                        WHERE SV.id = '%s'";
+
+        $sql = sprintf(
+            $sql,
+            mysqli_real_escape_string($this->getConnect(), $surveyId)
+        );
+
+        $result = $this->db->query($sql);
+        if (is_object($result)) {
+            while ($row = $result->fetch_assoc()) {
+                $survey = new EntitySurvey($row['id'], $row['name'], $row['description'], $row['status'], $row['user_id']);
+            }
+        }
+        if ($survey->status == 1) {
+            return $survey;
+        }
     }
 
 

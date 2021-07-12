@@ -177,6 +177,22 @@ class ModelUser
         }
     }
 
+
+    public function checkSurveyDone($userId, $surveyId)
+    {
+        $sql = "SELECT COUNT(*) 
+                FROM answer 
+                WHERE user_id = '%s' AND survey_id = '%s'";
+        $sql = sprintf(
+            $sql,
+            mysqli_real_escape_string($this->getConnect(), $userId),
+            mysqli_real_escape_string($this->getConnect(), $surveyId)
+        );
+        $result = $this->db->query($sql);
+        $done = $result->fetch_row();
+        return $done[0];
+    }
+
     /**
      * check user role
      * @param $userId

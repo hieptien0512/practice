@@ -31,7 +31,7 @@ class InputQuestionController
             }
         }
         if (!empty($_POST)) {
-            $error = $modelQuestion->validateInputQuestion($_POST, $_GET['surveyId']);
+            $error = $modelQuestion->validateInputQuestion($_POST);
             if ($error != '') {
                 $template->assign('error', $error);
             } else {
