@@ -189,8 +189,8 @@ class ModelUser
             mysqli_real_escape_string($this->getConnect(), $surveyId)
         );
         $result = $this->db->query($sql);
-        $done = $result->fetch_row();
-        return $done[0];
+        $idDone = $result->fetch_row();
+        return $idDone[0];
     }
 
     /**

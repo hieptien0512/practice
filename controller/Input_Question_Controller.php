@@ -36,7 +36,7 @@ class InputQuestionController
                 $template->assign('error', $error);
             } else {
                 $modelQuestion->inputQuestion($_POST, $_GET['surveyId']);
-                header('location:Main_Page_Controller.php');
+                header('location:View_Survey_Controller.php?surveyId='.$_GET['surveyId']);
             }
         }
         $userName = $modelUser->getUserInfo($_SESSION['login']);

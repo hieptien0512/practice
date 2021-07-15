@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Create Survey</title>
+    <title>View Survey Admin</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -66,7 +66,7 @@
                 <a class="nav-link" href="Main_Page_Controller.php">Home</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link">Create Question </a>
+                <a class="nav-link">View Survey </a>
             </li>
         </ul>
         <ul class="navbar-nav ml-auto">
@@ -85,7 +85,7 @@
     </div>
 </nav>
 <div class="container cardHolder">
-    <h2 class="strokeme display-5 text-center text-warning font-weight-bold">Create Question</h2>
+    <h2 class="strokeme display-5 text-center text-warning font-weight-bold">View Survey</h2>
     <form class="formSurvey" method="post">
 
         <div class="form-group mt-2">
@@ -97,86 +97,65 @@
                    placeholder="Survey Description" value="{$survey->description|escape:"html"}" disabled>
         </div>
         <div class="cardList container">
-            <div class="card mt-2" id="questionCard1">
-                <div class="card-header">
-                    Question
-                    <button type="button"
-                            id="delQuestion1"
-                            class="btn btn-danger btn-sm"
-                            onclick="removeCard(1)">
-                        Delete
-                    </button>
-                    <div class="form-check form-check-inline" id="radio1">
-                        <input class="form-check-input ml-4"
-                               type="radio"
-                               name="question1[]"
-                               id="multiCheck1"
-                               value="0"
-                                checked="checked">
-                        <label class="form-check-label"
-                               for="multiCheck1">Multiple Choice</label>
-                        <input class="form-check-input ml-2"
-                               type="radio"
-                               name="question1[]"
-                               id="singleCheck1"
-                               value="1">
-                        <label class="form-check-label"
-                               for="singleCheck1">Single Choice</label>
+            {foreach from=$questionList item=question}
+                <div class="card mt-2" id="questionCard{$question->order|escape:"html"}">
+                    <div class="card-header">
+                        Question
                     </div>
+                    <div class="card-body">
+                        <!-- list holder -->
+                        <div class="listHolder{$question->order|escape:"html"}">
+                            <div class="form-group">
+                                <label for="question"><b>{$question->question_content|escape:"html"}</b></label>
+                            </div>
+                            <ul class="list{$question->order|escape:"html"}">
+                                {if $question->question_type eq 0}
+                                    <input type="hidden" value="{$question->id|escape:"html"}"
+                                           name="answer{$question->order|escape:"html"}[]">
+                                    {foreach from=$choiceList item=choice }
+                                        {if $choice->question_id eq $question->id}
+                                            <div class="form-check{$index} required mt-2">
+                                                <input class="form-check-input" type="checkbox" value="{$choice->id|escape:"html"}"
+                                                       name="answer{$question->order|escape:"html"}[]" disabled>
+                                                <label class="form-check-label" for="defaultCheck1">
+                                                    {$choice->choice|escape:"html"}
+                                                </label>
+                                            </div>
+                                        {/if}
+                                    {/foreach}
+                                    <label hidden>{$index++}</label>
+                                {else}
+                                    <input type="hidden" value="{$question->id|escape:"html"}"
+                                           name="answer{$question->order|escape:"html"}[]">
+                                    {foreach from=$choiceList item=choice }
+                                        {if $choice->question_id eq $question->id}
+                                            <div class="form-check mt-2">
+                                                <input class="form-check-input" type="radio"
+                                                       name="answer{$question->order|escape:"html"}[]"
+                                                       value="{$choice->id|escape:"html"}" disabled>
+                                                <label class="form-check-label" for="defaultCheck1">
+                                                    {$choice->choice|escape:"html"}
+                                                </label>
+                                            </div>
+                                        {/if}
+                                    {/foreach}
+                                {/if}
 
-                </div>
-                <div class="card-body">
-                    <!-- list holder -->
-                    <div class="listHolder1">
-                        <ul class="list1">
-                            <li>
-                                <div class="form-group mt-2">
-                                    <input type="text" class="form-control"
-                                           id="question1[]"
-                                           name="question1[]"
-                                           placeholder="Question ?"
-                                           required>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="row" id="choice1">
-                                    <div class="form-group col-sm-11" name="questionChoice1" id="questionChoice1">
-                                        <input type="text" class="form-control form-control-sm" id="question1[]"
-                                               name="question1[]"
-                                               placeholder="Choice" required>
-                                    </div>
-                                    <div class="form-group col-sm-1" id="deleteChoice1">
-                                        <button type="button" id="delBtn2" class="btn btn-danger btn-sm"
-                                                onclick="removeChoice(1,1)">X
-                                        </button>
-                                    </div>
-                                </div>
-                            </li>
 
-                        </ul>
-                        <button type="button" id="addChoiceBtn1" class="btn btn-success btn-sm"
-                                style="float: right;" onclick="addChoice(1)">More Choice
-                        </button>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
+            {/foreach}
+
         </div>
         <div class="text-danger font-weight-bold">{if isset($error) }{$error|escape:"html"}{/if}</div>
-        <button class="btn btn-success btn-sm mt-2 mb-2"
-                id="addQuestionButton" style="float: right;">
-            Save
-        </button>
     </form>
-    <div class="row">
-        <button class="btn btn-warning btn-sm mt-2 mb-2 mr-2"
-                id="addQuestionButton"
-                onclick="addQuestionCard()">
-            Add New Question
-        </button>
-    </div>
+    <a class="btn btn-success btn-sm mt-2"
+            id="addQuestionButton" href="Main_Page_Controller.php" style="float: right;">
+        Return Home
+    </a>
+
 </div>
-
-<script src="../js/Input_Survey.js"></script>
 </body>
-
 </html>

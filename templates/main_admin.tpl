@@ -115,7 +115,7 @@
                 {foreach from=$surveyList item=result}
                     <tr>
                         <td width="60rem">{$index++}</td>
-                        <td>{$result->name|escape:"html"}</td>
+                        <td><a class="text-warning" href="View_Survey_Controller.php?surveyId={$result->id|escape:"html"}">{$result->name|escape:"html"}</a></td>
                         <td>{$result->description|escape:"html"}</td>
                         <td width="100rem">{if $result->status eq 0}
                                 Created

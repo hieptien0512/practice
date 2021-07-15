@@ -7,11 +7,9 @@ include_once("../model/Question_Entity.php");
 include_once("../model/Question_Model.php");
 include_once("../model/Choice_Entity.php");
 include_once("../model/Choice_Model.php");
-include_once("../model/Answer_Entity.php");
-include_once("../model/Answer_Model.php");
 require_once("../smarty/My_Smarty.php");
 
-class StartSurveyController
+class ViewController
 {
     public function invoke()
     {
@@ -20,20 +18,16 @@ class StartSurveyController
         $modelSurvey = new ModelSurvey();
         $modelChoice = new ModelChoice();
         $modelUser = new ModelUser();
-        $modelAnswer = new ModelAnswer();
 
         session_start();
         if (!isset($_SESSION['login'])) {
             header("location:Signin_User_Controller.php");
         }
-        if ($modelUser->checkUserRole($_SESSION['login']) == 1 || !isset($_GET['surveyId'])) {
+        if ($modelUser->checkUserRole($_SESSION['login']) == 0 || !isset($_GET['surveyId'])) {
             header('location:Main_Page_Controller.php');
 
-        } elseif ($modelUser->checkSurveyDone($_SESSION['login'], $_GET['surveyId']) > 0) {
-            header('location:Result_Survey_Controller.php');
-
         } else {
-            $survey = $modelSurvey->getSurveyDetailUser($_GET['surveyId']);
+            $survey = $modelSurvey->getSurveyDetail($_GET['surveyId'], $_SESSION['login']);
             if (isset($survey)) {
                 $template->assign('survey', $survey);
                 $questionList = $modelQuestion->getAllQuestion($_GET['surveyId']);
@@ -45,20 +39,11 @@ class StartSurveyController
                 header('location:Input_Survey_Controller.php');
             }
         }
-        if (!empty($_POST)) {
-            $error = $modelAnswer->validateInputAnswer($_POST);
-            if ($error != '') {
-                $template->assign('error', $error);
-            } else {
-                $modelAnswer->inputAnswer($_POST, $_GET['surveyId'], $_SESSION['login']);
-                header('location:Main_Page_Controller.php');
-            }
-        }
         $userName = $modelUser->getUserInfo($_SESSION['login']);
         $template->assign('userName', $userName);
-        $template->display("start_survey.tpl");
+        $template->display("view_survey.tpl");
     }
 }
 
-$startSurvey = new StartSurveyController();
-$startSurvey->invoke();
+$viewSurvey = new ViewController();
+$viewSurvey->invoke();

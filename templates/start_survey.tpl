@@ -98,42 +98,44 @@
         </div>
         <div class="cardList container">
             {foreach from=$questionList item=question}
-                <div class="card mt-2" id="questionCard1">
+                <div class="card mt-2" id="questionCard{$question->order|escape:"html"}">
                     <div class="card-header">
                         Question
                     </div>
                     <div class="card-body">
                         <!-- list holder -->
-                        <div class="listHolder1">
+                        <div class="listHolder{$question->order|escape:"html"}">
                             <div class="form-group">
-                                <label for="question">{$question->question_content}</label>
+                                <label for="question"><b>{$question->question_content}</b></label>
                             </div>
-                            <ul class="list1">
+                            <ul class="list{$question->order|escape:"html"}">
                                 {if $question->question_type eq 0}
-                                    <input type="hidden" value="{$question->id}"
-                                           name="answer{$question->order}[]">
+                                    <input type="hidden" value="{$question->id|escape:"html"}"
+                                           name="answer{$question->order|escape:"html"}[]">
                                     {foreach from=$choiceList item=choice }
                                         {if $choice->question_id eq $question->id}
-                                            <div class="form-check mt-2">
-                                                <input class="form-check-input" type="checkbox" value="{$choice->id}"
-                                                       name="answer{$question->order}[]">
+                                            <div class="form-check{$index} required mt-2">
+                                                <input class="form-check-input" type="checkbox" value="{$choice->id|escape:"html"}"
+                                                       name="answer{$question->order|escape:"html"}[]"
+                                                       onclick="validate({$question->order|escape:"html"})" required="required">
                                                 <label class="form-check-label" for="defaultCheck1">
-                                                    {$choice->choice}
+                                                    {$choice->choice|escape:"html"}
                                                 </label>
                                             </div>
                                         {/if}
                                     {/foreach}
+                                    <label hidden>{$index++}</label>
                                 {else}
-                                    <input type="hidden" value="{$question->id}"
-                                           name="answer{$question->order}[]">
+                                    <input type="hidden" value="{$question->id|escape:"html"}"
+                                           name="answer{$question->order|escape:"html"}[]">
                                     {foreach from=$choiceList item=choice }
                                         {if $choice->question_id eq $question->id}
                                             <div class="form-check mt-2">
                                                 <input class="form-check-input" type="radio"
-                                                       name="answer{$question->order}[]"
-                                                       value="{$choice->id}" required>
+                                                       name="answer{$question->order|escape:"html"}[]"
+                                                       value="{$choice->id|escape:"html"}" required>
                                                 <label class="form-check-label" for="defaultCheck1">
-                                                    {$choice->choice}
+                                                    {$choice->choice|escape:"html"}
                                                 </label>
                                             </div>
                                         {/if}
@@ -152,11 +154,11 @@
 
         <button class="btn btn-success btn-sm mt-2"
                 id="addQuestionButton" style="float: right;">
-            Save Your Survey
+            Save Your Answer
         </button>
     </form>
 
 </div>
 </body>
-
+<script src="../js/Input_Answer.js"></script>
 </html>
