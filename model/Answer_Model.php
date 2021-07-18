@@ -57,16 +57,18 @@ class ModelAnswer
         }
     }
 
-    /** check validate input answer post
+    /**
+     * return error after validate post insert answer
      * @param $postValue
-     * @return string error
+     * @param string $surveyId
+     * @return string
      */
-    public function validateInputAnswer($postValue): string
+    public function validateInputAnswer($postValue, string $surveyId): string
     {
         $error = '';
         $validate = new ValidatePostValue();
-        if ($validate->validatePostAnswer($postValue) == false) {
-            $error = 'Please choose answer for all question';
+        if ($validate->validatePostAnswer($postValue, $surveyId) == false) {
+            $error = 'Invalid question or choice. Please answer all question.';
         }
         return $error;
     }

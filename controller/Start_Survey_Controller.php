@@ -30,7 +30,7 @@ class StartSurveyController
             header('location:Main_Page_Controller.php');
 
         } elseif ($modelUser->checkSurveyDone($_SESSION['login'], $_GET['surveyId']) > 0) {
-            header('location:Result_Survey_Controller.php?surveyId='.$_GET['surveyId']);
+            header('location:Result_Survey_Controller.php?surveyId=' . $_GET['surveyId']);
 
         } else {
             $survey = $modelSurvey->getSurveyDetailUser($_GET['surveyId']);
@@ -46,7 +46,7 @@ class StartSurveyController
             }
         }
         if (!empty($_POST)) {
-            $error = $modelAnswer->validateInputAnswer($_POST);
+            $error = $modelAnswer->validateInputAnswer($_POST, $_GET['surveyId']);
             if ($error != '') {
                 $template->assign('error', $error);
             } else {
