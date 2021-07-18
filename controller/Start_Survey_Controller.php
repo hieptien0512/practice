@@ -30,7 +30,7 @@ class StartSurveyController
             header('location:Main_Page_Controller.php');
 
         } elseif ($modelUser->checkSurveyDone($_SESSION['login'], $_GET['surveyId']) > 0) {
-            header('location:Result_Survey_Controller.php');
+            header('location:Result_Survey_Controller.php?surveyId='.$_GET['surveyId']);
 
         } else {
             $survey = $modelSurvey->getSurveyDetailUser($_GET['surveyId']);

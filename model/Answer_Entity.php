@@ -1,6 +1,6 @@
 <?php
 
-class EntityEntity
+class EntityAnswer
 {
     public $id;
     public $question_id;

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 include_once "DB.php";
 include_once "Choice_Model.php";
 include_once "Validate_Post.php";
@@ -20,11 +21,11 @@ class ModelQuestion
 
 
     /**
-     * get all question from surveyId
-     * @param $surveyId
-     * @return array entityQuestion
+     * query get all question of surveyId from DB
+     * @param string $surveyId
+     * @return array
      */
-    public function getAllQuestion($surveyId)
+    public function getAllQuestion(string $surveyId): array
     {
 
         //sql query variable binding
@@ -48,21 +49,21 @@ class ModelQuestion
     }
 
     /**
-     * input question from post value
+     * insert question from post value
      * @param $postValue
-     * @param int $surveyId
+     * @param string $surveyId
      */
-    public function inputQuestion($postValue, $surveyId)
+    public function inputQuestion($postValue, string $surveyId)
     {
         $modelChoice = new ModelChoice();
         $order = 0;
 
         foreach ($postValue as $question) {
             $order++;
-            $questionId = $this->insertQuestion($question[1], $surveyId, $order, $question[0]);
+            $questionId = $this->insertQuestion($question[1], $surveyId, (string)$order, $question[0]);
 
             for ($j = 2; $j < count($question); $j++) {
-                $modelChoice->insertChoice($question[$j], $questionId, $j);
+                $modelChoice->insertChoice($question[$j], (string)$questionId, (string)$j);
             }
         }
     }
@@ -70,10 +71,9 @@ class ModelQuestion
     /**
      * validate all input field not blank
      * @param $postValue
-     * @param int $surveyId
      * @return string
      */
-    public function validateInputQuestion($postValue)
+    public function validateInputQuestion($postValue): string
     {
         $error = '';
         $validate = new ValidatePostValue();
@@ -87,11 +87,11 @@ class ModelQuestion
     /**
      * insert QUESTION in to db table survey
      * @param string $question question content
-     * @param int $surveyId
-     * @param int $order
+     * @param string $surveyId
+     * @param string $order
      * @return int
      */
-    public function insertQuestion($question, $surveyId, $order, $question_type)
+    public function insertQuestion(string $question, string $surveyId, string $order, string $question_type): int
     {
         //sql query string
         $sql = "INSERT INTO question (survey_id, question_content, `order`, question_type) 

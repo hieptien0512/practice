@@ -19,10 +19,10 @@ class ModelChoice
     /**
      * insert choice in to db
      * @param string $choice choice content
-     * @param int $questionId
-     * @param int $order
+     * @param string $questionId
+     * @param string $order
      */
-    public function insertChoice($choice, $questionId, $order)
+    public function insertChoice(string $choice, string $questionId, string $order)
     {
         //sql query string
         $sql = "INSERT INTO choice (question_id, choice_content, `order`) 
@@ -40,10 +40,10 @@ class ModelChoice
 
     /**
      * get all choice from surveyId
-     * @param $surveyId
+     * @param string $surveyId
      * @return array entityChoice
      */
-    public function getAllChoice($surveyId)
+    public function getAllChoice(string $surveyId): array
     {
 
         //sql query variable binding
@@ -61,5 +61,52 @@ class ModelChoice
             }
         }
         return $choiceList;
+    }
+
+    /**
+     * @param string $surveyId
+     * @return array entityChoice
+     */
+    public function testChart(string $surveyId): string
+    {
+
+        //sql query variable binding
+        $sql = "SELECT choice_id, COUNT(*) 
+                FROM answer 
+                WHERE choice_id IN 
+                (
+                    SELECT choice.id 
+                    FROM choice 
+                    WHERE question_id 
+                    IN
+                    (
+                        SELECT question.id 
+                        FROM question 
+                        WHERE survey_id = '%s'
+                    )
+                ) 
+                GROUP BY choice_id";
+        $sql = sprintf(
+            $sql,
+            mysqli_real_escape_string($this->getConnect(), $surveyId),
+        );
+        $chartList = [['Work', 11],
+            ['Eat', 2],
+            ['Commute', 2],
+            ['Watch TV', 2],
+            ['Sleep', 7]];
+        $result = $this->db->query($sql);
+//        if (is_object($result)) {
+//            while ($row = $result->fetch_assoc()) {
+//                $chart = new EntityChart($row['choice_id'], (int)$row['COUNT(*)']);
+//                array_push($chartList, $chart);
+////                $chartList[] = $row['choice_id'];
+////                $chartList[] = $row['COUNT(*)'];
+////                $value = $row['choice_id'].','.$row['COUNT(*)'];
+////                array_push($chartList, $value);
+//            }
+//        }
+
+        return json_encode($chartList);
     }
 }

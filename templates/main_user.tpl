@@ -130,7 +130,7 @@
                         {if $result->status eq 2}
                             <td width="100rem">
                                 <button class="btn btn-warning"
-                                        onclick="window.open('Result_Survey_Controller.php','_self')">
+                                        onclick="window.open('Result_Survey_Controller.php?surveyId={$result->id}','_self')">
                                     Result
                                 </button>
                             </td>

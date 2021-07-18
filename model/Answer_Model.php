@@ -19,12 +19,12 @@ class ModelAnswer
 
     /**
      * insert answer into DB
-     * @param $questionId
-     * @param $choiceId
-     * @param $userId
-     * @param $surveyId
+     * @param string $questionId
+     * @param string $choiceId
+     * @param string $userId
+     * @param string $surveyId
      */
-    public function insertAnswer($questionId, $choiceId, $userId, $surveyId)
+    public function insertAnswer(string $questionId, string $choiceId, string $userId, string $surveyId)
     {
         //sql query string
         $sql = "INSERT INTO answer (question_id, choice_id, user_id, survey_id) 
@@ -44,10 +44,10 @@ class ModelAnswer
     /**
      * input answer from post value
      * @param $postValue
-     * @param $surveyId
-     * @param $userId
+     * @param string $surveyId
+     * @param string $userId
      */
-    public function inputAnswer($postValue, $surveyId, $userId)
+    public function inputAnswer($postValue, string $surveyId, string $userId)
     {
         foreach ($postValue as $question) {
             for ($i = 1; $i < count($question); $i++) {
@@ -61,7 +61,7 @@ class ModelAnswer
      * @param $postValue
      * @return string error
      */
-    public function validateInputAnswer($postValue)
+    public function validateInputAnswer($postValue): string
     {
         $error = '';
         $validate = new ValidatePostValue();

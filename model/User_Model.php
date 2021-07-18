@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 include_once "DB.php";
 
 class ModelUser
@@ -22,7 +23,7 @@ class ModelUser
      * @param string $password
      * @return EntityUser|false
      */
-    public function getUserDetail($userEmail, $password)
+    public function getUserDetail(string $userEmail, string $password): EntityUser|false
     {
         //check if email exist return false
         $user = $this->validateUserEmail($userEmail);
@@ -40,7 +41,7 @@ class ModelUser
      * @param string $userEmail
      * @return EntityUser
      */
-    public function validateUserEmail($userEmail)
+    public function validateUserEmail(string $userEmail): EntityUser
     {
         //sql query string
         $sql = "SELECT *
@@ -67,7 +68,7 @@ class ModelUser
      * @param $postValue
      * @return string error
      */
-    public function validateInsert($postValue)
+    public function validateInsert($postValue): string
     {
         //validate phone field
         $error = '';
@@ -166,10 +167,10 @@ class ModelUser
 
     /**
      * validate param isset
-     * @param $param : string
-     * @return param if isset
-     **/
-    public function validateParam($param)
+     * @param string $param
+     * @return string
+     */
+    public function validateParam(string $param): string
     {
         //validate param
         if (isset($param)) {
@@ -177,8 +178,13 @@ class ModelUser
         }
     }
 
-
-    public function checkSurveyDone($userId, $surveyId)
+    /**
+     * check if that user is already done the survey
+     * @param string $userId
+     * @param string $surveyId
+     * @return mixed
+     */
+    public function checkSurveyDone(string $userId, string $surveyId): mixed
     {
         $sql = "SELECT COUNT(*) 
                 FROM answer 
@@ -194,11 +200,11 @@ class ModelUser
     }
 
     /**
-     * check user role
-     * @param $userId
-     * @return bool|mysqli_result 1:admin, 0:user
+     * check user role 0: is user; 1: is admin
+     * @param string $userId
+     * @return mixed
      */
-    public function checkUserRole($userId)
+    public function checkUserRole(string $userId): mixed
     {
         $sql = "SELECT is_admin
                         FROM user as US
@@ -213,10 +219,11 @@ class ModelUser
     }
 
     /**
-     * @param $userId
-     * @return array
+     * get user name from db
+     * @param string $userId
+     * @return string
      */
-    public function getUserInfo($userId)
+    public function getUserInfo(string $userId): string
     {
         //sql query string
         $sql = "SELECT `name`
