@@ -13,45 +13,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../stylesheets/main.css">
 
-    <style>
-        {literal}
-        body {
-            background-image: url('../bg.jpeg');
-            height: 100%;
-            width: 100%;
-            position: absolute;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-attachment: fixed;
-
-        }
-
-        .strokeme {
-            color: white;
-            text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-        }
-
-        tbody {
-            display: block;
-            height: 200px;
-            overflow: auto;
-        }
-
-        thead, tbody tr {
-            display: table;
-            width: 100%;
-            table-layout: fixed; /* even columns width , fix width of table too*/
-        }
-
-        thead {
-            width: calc(100% - 1em) /* scrollbar is average 1em/16px width, remove it from thead width */
-        }
-
-
-        {/literal}
-    </style>
 </head>
 <body>
 <nav class="navbar navbar-dark bg-dark navbar-expand-lg ">
@@ -115,9 +78,11 @@
                                     {foreach from=$choiceList item=choice }
                                         {if $choice->question_id eq $question->id}
                                             <div class="form-check{$index} required mt-2">
-                                                <input class="form-check-input" type="checkbox" value="{$choice->id|escape:"html"}"
+                                                <input class="form-check-input" type="checkbox"
+                                                       value="{$choice->id|escape:"html"}"
                                                        name="answer{$question->order|escape:"html"}[]"
-                                                       onclick="validate({$question->order|escape:"html"})" required="required">
+                                                       onclick="validate({$question->order|escape:"html"})"
+                                                       required="required">
                                                 <label class="form-check-label" for="defaultCheck1">
                                                     {$choice->choice|escape:"html"}
                                                 </label>

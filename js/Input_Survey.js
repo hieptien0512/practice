@@ -11,6 +11,39 @@ function createLi(index) {
     choice.setAttribute("class", "row");
     choice.setAttribute("id", "choice" + indexChoice);
 
+    const li = document.createElement('li');
+    choice.innerHTML += createQuestionField(index).outerHTML + createDeleteChoiceButton(index).outerHTML;
+    li.innerHTML += choice.outerHTML;
+    return li;
+}
+
+/**
+ * create delete choice button for new choice
+ * @param index
+ * @returns {HTMLDivElement}
+ */
+function createDeleteChoiceButton(index) {
+    const deleteChoice = document.createElement('div');
+    deleteChoice.setAttribute("class", "form-group col-sm-1");
+    deleteChoice.setAttribute("id", "deleteChoice" + indexChoice);
+
+    const delBtn = document.createElement('button');
+    delBtn.setAttribute("type", "button");
+    delBtn.setAttribute("id", "delBtn" + indexChoice);
+    delBtn.setAttribute("class", "btn btn-danger btn-sm");
+    delBtn.setAttribute("onclick", "removeChoice(" + indexChoice + "," + index + ")");
+    delBtn.appendChild(document.createTextNode("X"));
+
+    deleteChoice.innerHTML += delBtn.outerHTML;
+    return deleteChoice;
+}
+
+/**
+ * create question input for new choice
+ * @param index
+ * @returns {HTMLDivElement}
+ */
+function createQuestionField(index) {
     const questionChoice = document.createElement('div');
     questionChoice.setAttribute("class", "form-group col-sm-11");
     questionChoice.setAttribute("id", "questionChoice" + indexChoice);
@@ -26,24 +59,7 @@ function createLi(index) {
     inputChoice.required = true;
 
     questionChoice.innerHTML += inputChoice.outerHTML;
-
-    const deleteChoice = document.createElement('div');
-    deleteChoice.setAttribute("class", "form-group col-sm-1");
-    deleteChoice.setAttribute("id", "deleteChoice" + indexChoice);
-
-    const delBtn = document.createElement('button');
-    delBtn.setAttribute("type", "button");
-    delBtn.setAttribute("id", "delBtn" + indexChoice);
-    delBtn.setAttribute("class", "btn btn-danger btn-sm");
-    delBtn.setAttribute("onclick", "removeChoice(" + indexChoice + "," + index + ")");
-    delBtn.appendChild(document.createTextNode("X"));
-
-    deleteChoice.innerHTML += delBtn.outerHTML;
-
-    const li = document.createElement('li');
-    choice.innerHTML += questionChoice.outerHTML + deleteChoice.outerHTML;
-    li.innerHTML += choice.outerHTML;
-    return li;
+    return questionChoice;
 }
 
 /**
@@ -97,6 +113,65 @@ function createCard() {
     card.setAttribute("class", "card mt-2");
     card.setAttribute("id", "questionCard" + indexQuestion);
 
+    card.innerHTML += createCardHeader().outerHTML + createCardBody().outerHTML;
+
+    return card;
+}
+
+/**
+ * create card body for card question
+ * @returns {HTMLDivElement}
+ */
+function createCardBody() {
+    const cardBody = document.createElement('div');
+    cardBody.setAttribute("class", "card-body");
+
+    const li = document.createElement('li');
+
+    const divQuestion = document.createElement('div');
+    divQuestion.setAttribute("class", "form-group mt-2");
+
+    const inputQuestion = document.createElement('input');
+    inputQuestion.setAttribute("type", "text");
+    inputQuestion.setAttribute("id", "question" + indexQuestion + "[]");
+    inputQuestion.setAttribute("name", "question" + indexQuestion + "[]");
+    inputQuestion.setAttribute("placeholder", "Question ?");
+    inputQuestion.setAttribute("class", "form-control");
+    inputQuestion.setAttribute("required", "");
+    inputQuestion.required = true;
+
+    const buttonAddChoice = document.createElement('button');
+    buttonAddChoice.setAttribute("type", "button");
+    buttonAddChoice.setAttribute("id", "addChoiceBtn" + indexQuestion);
+    buttonAddChoice.setAttribute("class", "btn btn-success btn-sm");
+    buttonAddChoice.setAttribute("style", "float: right;");
+    buttonAddChoice.setAttribute("onclick", "addChoice(" + indexQuestion + ")");
+    buttonAddChoice.appendChild(document.createTextNode("More Choice"));
+
+
+    divQuestion.innerHTML += inputQuestion.outerHTML;
+
+    li.innerHTML += divQuestion.outerHTML;
+
+    const ul = document.createElement('ul');
+    ul.setAttribute("class", "list" + indexQuestion);
+    ul.innerHTML += li.outerHTML + createLi(indexQuestion).outerHTML;
+
+
+    const listHolder = document.createElement('div');
+    listHolder.setAttribute("class", "listHolder" + indexQuestion);
+
+    listHolder.innerHTML += ul.outerHTML + buttonAddChoice.outerHTML;
+
+    cardBody.innerHTML += listHolder.outerHTML;
+    return cardBody;
+}
+
+/**
+ * create card header for card question
+ * @returns {HTMLDivElement}
+ */
+function createCardHeader() {
     const buttonDelCard = document.createElement('button');
     buttonDelCard.setAttribute("type", "button");
     buttonDelCard.setAttribute("id", "delQuestion" + indexQuestion);
@@ -141,56 +216,11 @@ function createCard() {
     cardHeader.appendChild(document.createTextNode("Question "));
 
     cardHeader.innerHTML += buttonDelCard.outerHTML + formCheck.outerHTML;
-
-    const cardBody = document.createElement('div');
-    cardBody.setAttribute("class", "card-body");
-
-    const li = document.createElement('li');
-
-    const divQuestion = document.createElement('div');
-    divQuestion.setAttribute("class", "form-group mt-2");
-
-    const inputQuestion = document.createElement('input');
-    inputQuestion.setAttribute("type", "text");
-    inputQuestion.setAttribute("id", "question" + indexQuestion + "[]");
-    inputQuestion.setAttribute("name", "question" + indexQuestion + "[]");
-    inputQuestion.setAttribute("placeholder", "Question ?");
-    inputQuestion.setAttribute("class", "form-control");
-    inputQuestion.setAttribute("required", "");
-    inputQuestion.required = true;
-
-    const buttonAddChoice = document.createElement('button');
-    buttonAddChoice.setAttribute("type", "button");
-    buttonAddChoice.setAttribute("id", "addChoiceBtn" + indexQuestion);
-    buttonAddChoice.setAttribute("class", "btn btn-success btn-sm");
-    buttonAddChoice.setAttribute("style", "float: right;");
-    buttonAddChoice.setAttribute("onclick", "addChoice(" + indexQuestion + ")");
-    buttonAddChoice.appendChild(document.createTextNode("More Choice"));
-
-
-    divQuestion.innerHTML += inputQuestion.outerHTML;
-
-    li.innerHTML += divQuestion.outerHTML;
-
-    const ul = document.createElement('ul');
-    ul.setAttribute("class", "list" + indexQuestion);
-    ul.innerHTML += li.outerHTML + createLi(indexQuestion).outerHTML;
-
-
-    const listHolder = document.createElement('div');
-    listHolder.setAttribute("class", "listHolder" + indexQuestion);
-
-    listHolder.innerHTML += ul.outerHTML + buttonAddChoice.outerHTML;
-
-    cardBody.innerHTML += listHolder.outerHTML;
-
-    card.innerHTML += cardHeader.outerHTML + cardBody.outerHTML;
-
-    return card;
+    return cardHeader;
 }
 
 /**
- * append card to cardlist
+ * append card question to cardlist
  **/
 function addQuestionCard() {
     const cardHolder = formQuestion.querySelector('.cardList');
