@@ -187,7 +187,7 @@ class ModelSurvey
      * @param string $surveyId
      * @return EntitySurvey
      */
-    public function getSurveyDetailUser(string $surveyId): EntitySurvey
+    public function getSurveyDetailUser(string $surveyId)
     {
         $sql = "SELECT *
                         FROM survey as SV
@@ -214,7 +214,7 @@ class ModelSurvey
      * @param string $surveyId
      * @return EntitySurvey
      */
-    public function getSurveyResult(string $surveyId): EntitySurvey
+    public function getSurveyResult(string $surveyId)
     {
         $sql = "SELECT *
                         FROM survey as SV
@@ -231,7 +231,7 @@ class ModelSurvey
                 $survey = new EntitySurvey($row['id'], $row['name'], $row['description'], $row['status'], $row['user_id']);
             }
         }
-        if ($survey->status == 2) {
+        if ($survey->status == 2 || $survey->status ==1) {
             return $survey;
         }
     }

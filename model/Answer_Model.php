@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 include_once "DB.php";
 include_once "Validate_Post.php";
 

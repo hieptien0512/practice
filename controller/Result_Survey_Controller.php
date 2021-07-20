@@ -26,23 +26,25 @@ class SurveyResultController
         }
         if (!isset($_GET['surveyId'])) {
             header('location:Main_Page_Controller.php');
-
-        } else {
-            $survey = $modelSurvey->getSurveyResult($_GET['surveyId']);
-            if (isset($survey)) {
-                $template->assign('survey', $survey);
-                $questionList = $modelQuestion->getAllQuestion($_GET['surveyId']);
-                $choiceList = $modelChoice->getAllChoice($_GET['surveyId']);
-                $template->assign('index', 1);
-                $template->assign('choiceList', $choiceList);
-                $template->assign('questionList', $questionList);
-            } else {
-                header('location:Main_Page_Controller.php');
-            }
         }
-        $chart = $modelChoice->testChart($_GET['surveyId']);
+
+        $survey = $modelSurvey->getSurveyResult($_GET['surveyId']);
+        if (!isset($survey)) {
+            header('location:Main_Page_Controller.php');
+        }
+        if ($modelUser->checkSurveyDone($_SESSION['login'], $_GET['surveyId']) == 0 && $survey->status == 1) {
+            header('location:Start_Survey_Controller.php?surveyId=' . $_GET['surveyId']);
+        }
+
+        $template->assign('survey', $survey);
+        $questionList = $modelQuestion->getAllQuestion($_GET['surveyId']);
+        $choiceList = $modelChoice->getAllChoice($_GET['surveyId']);
+        $template->assign('index', 1);
+        $template->assign('choiceList', $choiceList);
+        $template->assign('questionList', $questionList);
+
+        $chart = $modelChoice->getChartData($_GET['surveyId']);
         $template->assign('chart', $chart);
-        var_dump($chart);
         $userName = $modelUser->getUserInfo($_SESSION['login']);
         $template->assign('userName', $userName);
         $template->display("result_survey.tpl");

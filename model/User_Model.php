@@ -34,6 +34,7 @@ class ModelUser
         if (password_verify($password, $user->password)) {
             return $user;
         }
+        return false;
     }
 
     /**
@@ -41,7 +42,7 @@ class ModelUser
      * @param string $userEmail
      * @return EntityUser
      */
-    public function validateUserEmail(string $userEmail): EntityUser
+    public function validateUserEmail(string $userEmail)
     {
         //sql query string
         $sql = "SELECT *

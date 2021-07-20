@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 include_once "DB.php";
 
 class ModelChoice
@@ -64,49 +65,71 @@ class ModelChoice
     }
 
     /**
+     * return data for draw chart
      * @param string $surveyId
      * @return array entityChoice
      */
-    public function testChart(string $surveyId): string
+    public function getChartData(string $surveyId): string
+    {
+        $questionIdList = $this->getQuestionIdForChart($surveyId);
+        $chartList = [];
+        if (isset($questionIdList)) {
+            foreach ($questionIdList as $questionId) {
+                $sql = "SELECT choice.choice_content, COUNT(*) 
+                        FROM answer 
+                        INNER JOIN `choice`
+                        ON choice.id = answer.choice_id
+                        WHERE choice_id IN 
+                        (
+                            SELECT choice.id 
+                            FROM choice 
+                            WHERE question_id = '%s'
+                        ) 
+                        GROUP BY choice_id";
+                $sql = sprintf(
+                    $sql,
+                    mysqli_real_escape_string($this->getConnect(), $questionId),
+                );
+                $chartItem = [['Title', 'value']];
+                $result = $this->db->query($sql);
+                if (is_object($result)) {
+                    while ($row = $result->fetch_assoc()) {
+                        $chart[0] = $row['choice_content'];
+                        $chart[1] = (int)$row['COUNT(*)'];
+                        array_push($chartItem, $chart);
+                    }
+                }
+                array_push($chartList, $chartItem);
+            }
+        }
+
+
+        return json_encode($chartList);
+    }
+
+    /**
+     * get all question id from survey
+     * @param string $surveyId
+     * @return array
+     */
+    public function getQuestionIdForChart(string $surveyId)
     {
 
         //sql query variable binding
-        $sql = "SELECT choice_id, COUNT(*) 
-                FROM answer 
-                WHERE choice_id IN 
-                (
-                    SELECT choice.id 
-                    FROM choice 
-                    WHERE question_id 
-                    IN
-                    (
-                        SELECT question.id 
-                        FROM question 
-                        WHERE survey_id = '%s'
-                    )
-                ) 
-                GROUP BY choice_id";
+        $sql = "SELECT `id` FROM question WHERE survey_id = '%s'";
         $sql = sprintf(
             $sql,
             mysqli_real_escape_string($this->getConnect(), $surveyId),
         );
-        $chartList = [['Work', 11],
-            ['Eat', 2],
-            ['Commute', 2],
-            ['Watch TV', 2],
-            ['Sleep', 7]];
         $result = $this->db->query($sql);
-//        if (is_object($result)) {
-//            while ($row = $result->fetch_assoc()) {
-//                $chart = new EntityChart($row['choice_id'], (int)$row['COUNT(*)']);
-//                array_push($chartList, $chart);
-////                $chartList[] = $row['choice_id'];
-////                $chartList[] = $row['COUNT(*)'];
-////                $value = $row['choice_id'].','.$row['COUNT(*)'];
-////                array_push($chartList, $value);
-//            }
-//        }
+        if (is_object($result)) {
+            while ($row = $result->fetch_array()) {
+                $questionIdList[] = $row['id'];
+            }
+        }
+        if (isset($questionIdList)) {
+            return $questionIdList;
 
-        return json_encode($chartList);
+        }
     }
 }

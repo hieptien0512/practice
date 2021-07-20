@@ -22,23 +22,24 @@ class InputQuestionController
 
         if ($modelUser->checkUserRole($_SESSION['login']) == 0 || !isset($_GET['surveyId'])) {
             header('location:Main_Page_Controller.php');
-        } else {
-            $survey = $modelSurvey->getSurveyDetail($_GET['surveyId'], $_SESSION['login']);
-            if (isset($survey)) {
-                $template->assign('survey', $survey);
-            } else {
-                header('location:Input_Survey_Controller.php');
-            }
         }
+
+        $survey = $modelSurvey->getSurveyDetail($_GET['surveyId'], $_SESSION['login']);
+        if (!isset($survey)) {
+            header('location:Input_Survey_Controller.php');
+        }
+
         if (!empty($_POST)) {
             $error = $modelQuestion->validateInputQuestion($_POST);
             if ($error != '') {
                 $template->assign('error', $error);
             } else {
                 $modelQuestion->inputQuestion($_POST, $_GET['surveyId']);
-                header('location:View_Survey_Controller.php?surveyId='.$_GET['surveyId']);
+                header('location:View_Survey_Controller.php?surveyId=' . $_GET['surveyId']);
             }
         }
+
+        $template->assign('survey', $survey);
         $userName = $modelUser->getUserInfo($_SESSION['login']);
         $template->assign('userName', $userName);
         $template->display("create_question.tpl");

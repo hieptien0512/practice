@@ -113,7 +113,6 @@
             {/foreach}
 
         </div>
-        <div class="text-danger font-weight-bold">{if isset($error) }{$error|escape:"html"}{/if}</div>
     </form>
     <a class="btn btn-success btn-sm mt-2"
        id="addQuestionButton" href="Main_Page_Controller.php" style="float: right;">

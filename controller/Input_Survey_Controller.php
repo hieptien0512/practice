@@ -31,7 +31,7 @@ class InputSurveyController
         }
         $userName = $modelUser->getUserInfo($_SESSION['login']);
         $template->assign('userName', $userName);
-        $template->display("create_survey.tpl");
+        $template->display("input_survey.tpl");
     }
 }
 
