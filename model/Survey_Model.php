@@ -179,7 +179,9 @@ class ModelSurvey
                 $survey = new EntitySurvey($row['id'], $row['name'], $row['description'], $row['status'], $row['user_id']);
             }
         }
-        return $survey;
+        if (isset($survey)) {
+            return $survey;
+        }
     }
 
     /**
@@ -231,7 +233,7 @@ class ModelSurvey
                 $survey = new EntitySurvey($row['id'], $row['name'], $row['description'], $row['status'], $row['user_id']);
             }
         }
-        if ($survey->status == 2 || $survey->status ==1) {
+        if ($survey->status == 2 || $survey->status == 1) {
             return $survey;
         }
     }

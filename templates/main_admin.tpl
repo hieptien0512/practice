@@ -83,14 +83,15 @@
 
                         <td width="100rem">
                             <button class="btn btn-warning"
-                                    onclick="window.open('Input_Survey_Controller.php?id={$result->id}','_self')"
-                                    {if $result->status neq 0}disabled{/if}>
-                                Edit
+                                    {if $result->status eq 0}disabled{/if}
+                                    onclick="window.open('Result_Survey_Controller.php?surveyId={$result->id}','_self')">
+                            Result
                             </button>
                         </td>
-                        {if $result->status eq 1}
+                        {if $result->status neq 0}
                             <td width="100rem">
-                                <button class="btn btn-danger" onclick="surveyStatus({$result->id}, {$result->status})">
+                                <button class="btn btn-danger" onclick="surveyStatus({$result->id}, {$result->status})"
+                                        {if $result->status eq 2}disabled{/if}>
                                     Close
                                 </button>
                             </td>
@@ -103,14 +104,7 @@
                                 </button>
                             </td>
                         {/if}
-                        {if $result->status eq 2}
-                            <td width="100rem">
-                                <button class="btn btn-warning"
-                                        onclick="window.open('Result_Survey_Controller.php?surveyId={$result->id}','_self')">
-                                    Result
-                                </button>
-                            </td>
-                        {/if}
+
                     </tr>
                 {/foreach}
                 </tbody>

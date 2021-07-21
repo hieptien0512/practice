@@ -32,8 +32,10 @@ class SurveyResultController
         if (!isset($survey)) {
             header('location:Main_Page_Controller.php');
         }
-        if ($modelUser->checkSurveyDone($_SESSION['login'], $_GET['surveyId']) == 0 && $survey->status == 1) {
-            header('location:Start_Survey_Controller.php?surveyId=' . $_GET['surveyId']);
+        if ($modelUser->checkUserRole($_SESSION['login']) == 0) {
+            if ($modelUser->checkSurveyDone($_SESSION['login'], $_GET['surveyId']) == 0 && $survey->status == 1) {
+                header('location:Start_Survey_Controller.php?surveyId=' . $_GET['surveyId']);
+            }
         }
 
         $template->assign('survey', $survey);

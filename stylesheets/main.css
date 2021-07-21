@@ -23,8 +23,6 @@ body {
 
 tbody {
     display: block;
-    height: 500px;
-    overflow: auto;
 }
 
 thead, tbody tr {
@@ -34,7 +32,7 @@ thead, tbody tr {
 }
 
 thead {
-    width: calc(100% - 1em) /* scrollbar is average 1em/16px width, remove it from thead width */
+    width: calc(100%) /* scrollbar is average 1em/16px width, remove it from thead width */
 }
 
 table {
