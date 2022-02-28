@@ -11,6 +11,39 @@ function createLi(index) {
     choice.setAttribute("class", "row");
     choice.setAttribute("id", "choice" + indexChoice);
 
+    const li = document.createElement('li');
+    choice.innerHTML += createQuestionField(index).outerHTML + createDeleteChoiceButton(index).outerHTML;
+    li.innerHTML += choice.outerHTML;
+    return li;
+}
+
+/**
+ * create delete choice button for new choice
+ * @param index
+ * @returns {HTMLDivElement}
+ */
+function createDeleteChoiceButton(index) {
+    const deleteChoice = document.createElement('div');
+    deleteChoice.setAttribute("class", "form-group col-sm-1");
+    deleteChoice.setAttribute("id", "deleteChoice" + indexChoice);
+
+    const delBtn = document.createElement('button');
+    delBtn.setAttribute("type", "button");
+    delBtn.setAttribute("id", "delBtn" + indexChoice);
+    delBtn.setAttribute("class", "btn btn-danger btn-sm");
+    delBtn.setAttribute("onclick", "removeChoice(" + indexChoice + "," + index + ")");
+    delBtn.appendChild(document.createTextNode("X"));
+
+    deleteChoice.innerHTML += delBtn.outerHTML;
+    return deleteChoice;
+}
+
+/**
+ * create question input for new choice
+ * @param index
+ * @returns {HTMLDivElement}
+ */
+function createQuestionField(index) {
     const questionChoice = document.createElement('div');
     questionChoice.setAttribute("class", "form-group col-sm-11");
     questionChoice.setAttribute("id", "questionChoice" + indexChoice);
@@ -26,24 +59,7 @@ function createLi(index) {
     inputChoice.required = true;
 
     questionChoice.innerHTML += inputChoice.outerHTML;
-
-    const deleteChoice = document.createElement('div');
-    deleteChoice.setAttribute("class", "form-group col-sm-1");
-    deleteChoice.setAttribute("id", "deleteChoice" + indexChoice);
-
-    const delBtn = document.createElement('button');
-    delBtn.setAttribute("type", "button");
-    delBtn.setAttribute("id", "delBtn" + indexChoice);
-    delBtn.setAttribute("class", "btn btn-danger btn-sm");
-    delBtn.setAttribute("onclick", "removeChoice(" + indexChoice + "," + index + ")");
-    delBtn.appendChild(document.createTextNode("X"));
-
-    deleteChoice.innerHTML += delBtn.outerHTML;
-
-    const li = document.createElement('li');
-    choice.innerHTML += questionChoice.outerHTML + deleteChoice.outerHTML;
-    li.innerHTML += choice.outerHTML;
-    return li;
+    return questionChoice;
 }
 
 /**
@@ -97,19 +113,16 @@ function createCard() {
     card.setAttribute("class", "card mt-2");
     card.setAttribute("id", "questionCard" + indexQuestion);
 
-    const buttonDelCard = document.createElement('button');
-    buttonDelCard.setAttribute("type", "button");
-    buttonDelCard.setAttribute("id", "delQuestion" + indexQuestion);
-    buttonDelCard.setAttribute("class", "btn btn-danger btn-sm");
-    buttonDelCard.setAttribute("onclick", "removeCard(" + indexQuestion + ")");
-    buttonDelCard.appendChild(document.createTextNode("Delete"));
+    card.innerHTML += createCardHeader().outerHTML + createCardBody().outerHTML;
 
-    const cardHeader = document.createElement('div');
-    cardHeader.setAttribute("class", "card-header");
-    cardHeader.appendChild(document.createTextNode("Question "));
+    return card;
+}
 
-    cardHeader.innerHTML += buttonDelCard.outerHTML;
-
+/**
+ * create card body for card question
+ * @returns {HTMLDivElement}
+ */
+function createCardBody() {
     const cardBody = document.createElement('div');
     cardBody.setAttribute("class", "card-body");
 
@@ -151,14 +164,63 @@ function createCard() {
     listHolder.innerHTML += ul.outerHTML + buttonAddChoice.outerHTML;
 
     cardBody.innerHTML += listHolder.outerHTML;
-
-    card.innerHTML += cardHeader.outerHTML + cardBody.outerHTML;
-
-    return card;
+    return cardBody;
 }
 
 /**
- * append card to cardlist
+ * create card header for card question
+ * @returns {HTMLDivElement}
+ */
+function createCardHeader() {
+    const buttonDelCard = document.createElement('button');
+    buttonDelCard.setAttribute("type", "button");
+    buttonDelCard.setAttribute("id", "delQuestion" + indexQuestion);
+    buttonDelCard.setAttribute("class", "btn btn-danger btn-sm");
+    buttonDelCard.setAttribute("onclick", "removeCard(" + indexQuestion + ")");
+    buttonDelCard.appendChild(document.createTextNode("Delete"));
+
+    const formCheck = document.createElement('div');
+    formCheck.setAttribute("class", "form-check form-check-inline");
+    formCheck.setAttribute("id", "radio" + indexQuestion);
+
+    const multiCheck = document.createElement('input');
+    multiCheck.setAttribute("class", "form-check-input ml-4");
+    multiCheck.setAttribute("type", "radio");
+    multiCheck.setAttribute("name", "question" + indexQuestion + "[]");
+    multiCheck.setAttribute("id", "multiCheck" + indexQuestion);
+    multiCheck.setAttribute("value", "0");
+    multiCheck.setAttribute("checked", "checked");
+
+    const labelMulti = document.createElement('label');
+    labelMulti.setAttribute("class", "form-check-label");
+    labelMulti.setAttribute("for", "multiCheck" + indexQuestion);
+    labelMulti.appendChild(document.createTextNode("Multiple Choice"));
+
+    const singleCheck = document.createElement('input');
+    singleCheck.setAttribute("class", "form-check-input ml-4");
+    singleCheck.setAttribute("type", "radio");
+    singleCheck.setAttribute("name", "question" + indexQuestion + "[]");
+    singleCheck.setAttribute("id", "single" + indexQuestion);
+    singleCheck.setAttribute("value", "1");
+
+    const labelSingle = document.createElement('label');
+    labelSingle.setAttribute("class", "form-check-label");
+    labelSingle.setAttribute("for", "single" + indexQuestion);
+    labelSingle.appendChild(document.createTextNode("Single Choice"));
+
+    formCheck.innerHTML += multiCheck.outerHTML + labelMulti.outerHTML + singleCheck.outerHTML + labelSingle.outerHTML;
+
+
+    const cardHeader = document.createElement('div');
+    cardHeader.setAttribute("class", "card-header");
+    cardHeader.appendChild(document.createTextNode("Question "));
+
+    cardHeader.innerHTML += buttonDelCard.outerHTML + formCheck.outerHTML;
+    return cardHeader;
+}
+
+/**
+ * append card question to cardlist
  **/
 function addQuestionCard() {
     const cardHolder = formQuestion.querySelector('.cardList');
@@ -166,18 +228,4 @@ function addQuestionCard() {
 }
 
 
-// /**
-//  * onclick addQuestionBtn will create new car for in put new question
-//  **/
-// const cardHolder = document.querySelector('.cardHolder');
-// const addQuestionBtn = document.querySelector('#addQuestionButton');
-//
-// addQuestionBtn.addEventListener('click', () =>{
-//     const formSurvey = cardHolder.querySelector('.formSurvey');
-//     const card = cardHolder.querySelector('.card');
-//     const div = document.createElement('div');
-//     div.className = "container";
-//     div.innerHTML += card.outerHTML;
-//     formSurvey.appendChild(div);
-//
-// });
+

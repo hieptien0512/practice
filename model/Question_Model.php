@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 include_once "DB.php";
 include_once "Choice_Model.php";
 include_once "Validate_Post.php";
@@ -20,10 +21,11 @@ class ModelQuestion
 
 
     /**
-     * @param int $surveyId
+     * query get all question of surveyId from DB
+     * @param string $surveyId
      * @return array
      */
-    public function getAllQuestion($surveyId)
+    public function getAllQuestion(string $surveyId): array
     {
 
         //sql query variable binding
@@ -39,7 +41,7 @@ class ModelQuestion
         $result = $this->db->query($sql);
         if (is_object($result)) {
             while ($row = $result->fetch_assoc()) {
-                $question = new EntityQuestion($row['id'], $row['survey_id'], $row['question_contain'], $row['order']);
+                $question = new EntityQuestion($row['id'], $row['survey_id'], $row['question_content'], $row['order'], $row['question_type']);
                 array_push($questionList, $question);
             }
         }
@@ -47,20 +49,21 @@ class ModelQuestion
     }
 
     /**
-     * insert QUESTION and choice into db table survey
+     * insert question from post value
      * @param $postValue
-     * @param int $surveyId
+     * @param string $surveyId
      */
-    public function inputQuestion($postValue, $surveyId)
+    public function inputQuestion($postValue, string $surveyId)
     {
         $modelChoice = new ModelChoice();
         $order = 0;
+
         foreach ($postValue as $question) {
             $order++;
-            $questionId = $this->insertQuestion($question[0], $surveyId, $order);
+            $questionId = $this->insertQuestion($question[1], $surveyId, (string)$order, $question[0]);
 
-            for ($j = 1; $j < count($question); $j++) {
-                $modelChoice->insertChoice($question[$j], $questionId, $j);
+            for ($j = 2; $j < count($question); $j++) {
+                $modelChoice->insertChoice($question[$j], (string)$questionId, (string)$j);
             }
         }
     }
@@ -68,14 +71,13 @@ class ModelQuestion
     /**
      * validate all input field not blank
      * @param $postValue
-     * @param int $surveyId
      * @return string
      */
-    public function validateInputQuestion($postValue, $surveyId)
+    public function validateInputQuestion($postValue): string
     {
         $error = '';
         $validate = new ValidatePostValue();
-        if ($validate->validatePostQuestion($postValue, $surveyId) == false) {
+        if ($validate->validatePostQuestion($postValue) == false) {
             $error = 'Invalid insert value';
         }
         return $error;
@@ -85,21 +87,22 @@ class ModelQuestion
     /**
      * insert QUESTION in to db table survey
      * @param string $question question content
-     * @param int $surveyId
-     * @param int $order
+     * @param string $surveyId
+     * @param string $order
      * @return int
      */
-    public function insertQuestion($question, $surveyId, $order)
+    public function insertQuestion(string $question, string $surveyId, string $order, string $question_type): int
     {
         //sql query string
-        $sql = "INSERT INTO question (survey_id, question_content, `order`) 
-                        VALUE ('%s', '%s', '%s')";
+        $sql = "INSERT INTO question (survey_id, question_content, `order`, question_type) 
+                        VALUE ('%s', '%s', '%s', '%s')";
         //sql injection, sql binding variable
         $sql = sprintf(
             $sql,
             mysqli_real_escape_string($this->getConnect(), $surveyId),
             mysqli_real_escape_string($this->getConnect(), $question),
-            mysqli_real_escape_string($this->getConnect(), $order)
+            mysqli_real_escape_string($this->getConnect(), $order),
+            mysqli_real_escape_string($this->getConnect(), $question_type)
         );
 
         $this->db->query($sql);

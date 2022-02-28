@@ -1,0 +1,62 @@
+body {
+    background-image: url('../bg.jpeg');
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+
+}
+
+.strokeme {
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+.panel-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+tbody {
+    display: block;
+}
+
+thead, tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed; /* even columns width , fix width of table too*/
+}
+
+thead {
+    width: calc(100%) /* scrollbar is average 1em/16px width, remove it from thead width */
+}
+
+table {
+    width: 400px;
+}
+
+.myDiv {
+    background-image: url('../bg.jpeg');
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.strokeme {
+    color: white;
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+}
+
+.form-auth {
+    width: 600px;
+}
+.lb {
+    font-size: 20px;
+}

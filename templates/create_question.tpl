@@ -13,45 +13,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../stylesheets/main.css">
 
-    <style>
-        {literal}
-        body {
-            background-image: url('../bg.jpeg');
-            height: 100%;
-            width: 100%;
-            position: absolute;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-attachment: fixed;
-
-        }
-
-        .strokeme {
-            color: white;
-            text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-        }
-
-        tbody {
-            display: block;
-            height: 200px;
-            overflow: auto;
-        }
-
-        thead, tbody tr {
-            display: table;
-            width: 100%;
-            table-layout: fixed; /* even columns width , fix width of table too*/
-        }
-
-        thead {
-            width: calc(100% - 1em) /* scrollbar is average 1em/16px width, remove it from thead width */
-        }
-
-
-        {/literal}
-    </style>
 </head>
 <body>
 <nav class="navbar navbar-dark bg-dark navbar-expand-lg ">
@@ -64,9 +27,6 @@
         <ul class="navbar-nav mr-auto">
             <li class="nav-item ">
                 <a class="nav-link" href="Main_Page_Controller.php">Home</a>
-            </li>
-            <li class="nav-item ">
-                <a class="nav-link" href="Input_Survey_Controller.php">Create Survey </a>
             </li>
             <li class="nav-item active">
                 <a class="nav-link">Create Question </a>
@@ -109,6 +69,24 @@
                             onclick="removeCard(1)">
                         Delete
                     </button>
+                    <div class="form-check form-check-inline" id="radio1">
+                        <input class="form-check-input ml-4"
+                               type="radio"
+                               name="question1[]"
+                               id="multiCheck1"
+                               value="0"
+                               checked="checked">
+                        <label class="form-check-label"
+                               for="multiCheck1">Multiple Choice</label>
+                        <input class="form-check-input ml-2"
+                               type="radio"
+                               name="question1[]"
+                               id="singleCheck1"
+                               value="1">
+                        <label class="form-check-label"
+                               for="singleCheck1">Single Choice</label>
+                    </div>
+
                 </div>
                 <div class="card-body">
                     <!-- list holder -->
@@ -131,7 +109,7 @@
                                                placeholder="Choice" required>
                                     </div>
                                     <div class="form-group col-sm-1" id="deleteChoice1">
-                                        <button type="button" id="delBtn2" class="btn btn-danger btn-sm"
+                                        <button type="button" id="delBtn1" class="btn btn-danger btn-sm"
                                                 onclick="removeChoice(1,1)">X
                                         </button>
                                     </div>

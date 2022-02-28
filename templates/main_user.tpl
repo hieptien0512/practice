@@ -13,54 +13,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../stylesheets/main.css">
 
-    <style>
-        {literal}
-        body {
-            background-image: url('../bg.jpeg');
-            height: 100%;
-            width: 100%;
-            position: absolute;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-attachment: fixed;
-
-        }
-
-        .strokeme {
-            color: white;
-            text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-        }
-
-        .panel-body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        tbody {
-            display: block;
-            height: 500px;
-            overflow: auto;
-        }
-
-        thead, tbody tr {
-            display: table;
-            width: 100%;
-            table-layout: fixed; /* even columns width , fix width of table too*/
-        }
-
-        thead {
-            width: calc(100% - 1em) /* scrollbar is average 1em/16px width, remove it from thead width */
-        }
-
-        table {
-            width: 400px;
-        }
-
-        {/literal}
-    </style>
 </head>
 <body>
 <nav class="navbar navbar-dark bg-dark navbar-expand-lg ">
@@ -122,15 +76,15 @@
                         {if $result->status eq 1}
                             <td width="100rem">
                                 <button class="btn btn-success"
-                                        onclick="window.open('Start_Survey_Controller.php','_self')">
+                                        onclick="window.open('Start_Survey_Controller.php?surveyId={$result->id}','_self')">
                                     Start
                                 </button>
                             </td>
                         {/if}
                         {if $result->status eq 2}
                             <td width="100rem">
-                                <button class="btn btn-success"
-                                        onclick="window.open('Result_Survey_Controller.php','_self')">
+                                <button class="btn btn-warning"
+                                        onclick="window.open('Result_Survey_Controller.php?surveyId={$result->id}','_self')">
                                     Result
                                 </button>
                             </td>

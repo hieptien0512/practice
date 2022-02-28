@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Create Survey</title>
+    <title>Edit Survey</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -29,7 +29,7 @@
                 <a class="nav-link" href="Main_Page_Controller.php">Home</a>
             </li>
             <li class="nav-item active">
-                <a class="nav-link">Create Survey <span class="sr-only">(current)</span></a>
+                <a class="nav-link">Edit Survey <span class="sr-only">(current)</span></a>
             </li>
         </ul>
         <ul class="navbar-nav ml-auto">
@@ -48,23 +48,8 @@
     </div>
 </nav>
 <div class="container cardHolder">
-    <h2 class="strokeme display-4 text-center text-warning font-weight-bold">Create New Survey</h2>
-    <form class="formSurvey" method="post">
+    <h2 class="strokeme display-4 text-center text-warning font-weight-bold">Edit Survey Is Coming Soon</h2>
 
-        <div class="form-group mt-2">
-            <input type="text" class="form-control form-control-lg" id="name"
-                   name="name" placeholder="Survey Name" required>
-        </div>
-        <div class="form-group">
-            <input type="text" class="form-control form-control-sm" id="description"
-                   name="description" placeholder="Survey Description" required>
-        </div>
-        <div class="text-danger font-weight-bold">{if isset($error) }{$error|escape:"html"}{/if}</div>
-
-        <button class="btn btn-success" style="float: right;">Save</button>
-
-
-    </form>
 
 </div>
 

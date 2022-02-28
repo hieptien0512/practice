@@ -1,11 +1,55 @@
 <?php
+include_once("../model/User_Entity.php");
+include_once("../model/User_Model.php");
+include_once("../model/Survey_Entity.php");
 include_once("../model/Survey_Model.php");
+include_once("../model/Question_Entity.php");
+include_once("../model/Question_Model.php");
+include_once("../model/Chart_Entity.php");
+include_once("../model/Choice_Entity.php");
+include_once("../model/Choice_Model.php");
+require_once("../smarty/My_Smarty.php");
 
 class SurveyResultController
 {
     public function invoke()
     {
-        echo 'trang Result survey';
+        $template = new mySmarty();
+        $modelQuestion = new ModelQuestion();
+        $modelSurvey = new ModelSurvey();
+        $modelChoice = new ModelChoice();
+        $modelUser = new ModelUser();
+
+        session_start();
+        if (!isset($_SESSION['login'])) {
+            header("location:Signin_User_Controller.php");
+        }
+        if (!isset($_GET['surveyId'])) {
+            header('location:Main_Page_Controller.php');
+        }
+
+        $survey = $modelSurvey->getSurveyResult($_GET['surveyId']);
+        if (!isset($survey)) {
+            header('location:Main_Page_Controller.php');
+        }
+        if ($modelUser->checkUserRole($_SESSION['login']) == 0) {
+            if ($modelUser->checkSurveyDone($_SESSION['login'], $_GET['surveyId']) == 0 && $survey->status == 1) {
+                header('location:Start_Survey_Controller.php?surveyId=' . $_GET['surveyId']);
+            }
+        }
+
+        $template->assign('survey', $survey);
+        $questionList = $modelQuestion->getAllQuestion($_GET['surveyId']);
+        $choiceList = $modelChoice->getAllChoice($_GET['surveyId']);
+        $template->assign('index', 1);
+        $template->assign('choiceList', $choiceList);
+        $template->assign('questionList', $questionList);
+
+        $chart = $modelChoice->getChartData($_GET['surveyId']);
+        $template->assign('chart', $chart);
+        $userName = $modelUser->getUserInfo($_SESSION['login']);
+        $template->assign('userName', $userName);
+        $template->display("result_survey.tpl");
     }
 }
 

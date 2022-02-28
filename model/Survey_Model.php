@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 include_once "DB.php";
 include_once "Validate_Post.php";
 
@@ -19,10 +20,10 @@ class ModelSurvey
 
     /**
      * check user role
-     * @param $userId
-     * @return bool|mysqli_result 1:admin, 0:user
+     * @param string $userId
+     * @return mixed
      */
-    public function checkUserRole($userId)
+    public function checkUserRole(string $userId): mixed
     {
         $sql = "SELECT is_admin
                         FROM user as US
@@ -38,11 +39,11 @@ class ModelSurvey
 
     /**
      * get all survey from db
-     * @param int $userId
+     * @param string $userId
      * @param int $page
      * @return array
      */
-    public function getAllSurvey($userId, $page)
+    public function getAllSurvey(string $userId, int $page): array
     {
         $offset = $page * 10 - 10;
         if ($this->checkUserRole($userId)) {
@@ -59,6 +60,7 @@ class ModelSurvey
             $sql = "SELECT *
                         FROM survey as SV
                         WHERE SV.status = 1 OR SV.status =2
+                        ORDER BY SV.id DESC
                         LIMIT 10 OFFSET " . $offset;
         }
 
@@ -74,11 +76,11 @@ class ModelSurvey
     }
 
     /**
-     * count number of survey page for pagination ADMIN and USER main page, each page contain 10 survey record
-     * @param $userId
+     * count number of survey page for pagination ADMIN and USER main page, each page contain 10 survey record\
+     * @param string $userId
      * @return float|int
      */
-    public function countSurvey($userId)
+    public function countSurvey(string $userId): float|int
     {
         if ($this->checkUserRole($userId)) {
             $sql = "SELECT COUNT(id)
@@ -104,10 +106,10 @@ class ModelSurvey
 
     /**
      * change survey status form 0->1 and 1->2 in db
-     * @param int $surveyId
-     * @param int $surveyStatus
+     * @param string $surveyId
+     * @param string $surveyStatus
      */
-    public function changeSurveyStatus($surveyId, $surveyStatus)
+    public function changeSurveyStatus(string $surveyId, string $surveyStatus)
     {
         $status = !$surveyStatus ? 1 : 2;
 
@@ -124,10 +126,10 @@ class ModelSurvey
     /**
      * insert SURVEY in to db table survey
      * @param $postValue
-     * @param int $userId
+     * @param string $userId
      * @return int id of survey just inserted
      */
-    public function insertSurvey($postValue, $userId)
+    public function insertSurvey($postValue, string $userId): int
     {
         //validate field format
         if (isset($postValue['name'])) {
@@ -155,11 +157,11 @@ class ModelSurvey
 
     /**
      * query data of survey in DB
-     * @param int $surveyId
-     * @param int $userId
+     * @param string $surveyId
+     * @param string $userId
      * @return EntitySurvey
      */
-    public function getSurveyDetail($surveyId, $userId)
+    public function getSurveyDetail(string $surveyId, string $userId): EntitySurvey
     {
         $sql = "SELECT *
                         FROM survey as SV
@@ -177,7 +179,63 @@ class ModelSurvey
                 $survey = new EntitySurvey($row['id'], $row['name'], $row['description'], $row['status'], $row['user_id']);
             }
         }
-        return $survey;
+        if (isset($survey)) {
+            return $survey;
+        }
+    }
+
+    /**
+     * query data of survey with status is OPEN
+     * @param string $surveyId
+     * @return EntitySurvey
+     */
+    public function getSurveyDetailUser(string $surveyId)
+    {
+        $sql = "SELECT *
+                        FROM survey as SV
+                        WHERE SV.id = '%s'";
+
+        $sql = sprintf(
+            $sql,
+            mysqli_real_escape_string($this->getConnect(), $surveyId)
+        );
+
+        $result = $this->db->query($sql);
+        if (is_object($result)) {
+            while ($row = $result->fetch_assoc()) {
+                $survey = new EntitySurvey($row['id'], $row['name'], $row['description'], $row['status'], $row['user_id']);
+            }
+        }
+        if ($survey->status == 1) {
+            return $survey;
+        }
+    }
+
+    /**
+     * query data of survey with status is CLOSE
+     * @param string $surveyId
+     * @return EntitySurvey
+     */
+    public function getSurveyResult(string $surveyId)
+    {
+        $sql = "SELECT *
+                        FROM survey as SV
+                        WHERE SV.id = '%s'";
+
+        $sql = sprintf(
+            $sql,
+            mysqli_real_escape_string($this->getConnect(), $surveyId)
+        );
+
+        $result = $this->db->query($sql);
+        if (is_object($result)) {
+            while ($row = $result->fetch_assoc()) {
+                $survey = new EntitySurvey($row['id'], $row['name'], $row['description'], $row['status'], $row['user_id']);
+            }
+        }
+        if ($survey->status == 2 || $survey->status == 1) {
+            return $survey;
+        }
     }
 
 
@@ -186,7 +244,7 @@ class ModelSurvey
      * @param $postValue
      * @return string error
      */
-    public function validateInputSurvey($postValue)
+    public function validateInputSurvey($postValue): string
     {
         $error = '';
         $validate = new ValidatePostValue();

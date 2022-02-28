@@ -13,25 +13,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-    <style>
-        {literal}
-        .myDiv {
-            background-image: url('../bg.jpeg');
-            height: 100%;
-            width: 100%;
-            position: absolute;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-        }
+    <link rel="stylesheet" href="../stylesheets/main.css">
 
-        .strokeme {
-            color: white;
-            text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-        }
-
-        {/literal}
-    </style>
 </head>
 <body>
 <div class="myDiv">
